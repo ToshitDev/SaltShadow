@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1420">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23183b3f'/%3E%3Ctext x='7' y='24' font-size='25' fill='%237be1d2'%3ES%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Challenge road-salt hypotheses with a transparent evidence audit. SaltShadow Prove It integration demo.">
+  <title>SaltShadow — Prove It</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#inspector">Skip to evidence inspector</a>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="SaltShadow home"><span class="brand-icon" aria-hidden="true">S<span>↘</span></span><span>SALT<span class="brand-light">SHADOW</span><small>THE WINTER STORM CRIME SCENE</small></span></a>
+    <ol class="stages" aria-label="Team workflow"><li><span>01</span> Rewind</li><li><span>02</span> Investigate</li><li><span>03</span> Intervene</li><li aria-current="step"><span>04</span> Prove It <i></i></li></ol>
+    <span class="demo-label">PROVE IT / LOCAL DEMO</span>
+  </header>
+  <main id="app">
+    <div class="page-heading"><div><p class="eyebrow">EVIDENCE BEFORE CONCLUSIONS</p><h1>A connection is a question.<br><span>Make the evidence answer.</span></h1></div><button id="export" class="secondary" disabled>Export evidence brief <span aria-hidden="true">↗</span></button></div>
+    <section class="case-bar" aria-label="Selected historical case"><span class="case-mark" aria-hidden="true">❄</span><div><strong>Princeton, New Jersey</strong><span>January 25–26, 2026 · investigation window</span></div><a id="event-source" target="_blank" rel="noopener noreferrer">NOAA regional event record ↗</a><span class="case-id">CASE / NJ–001</span></section>
+    <div id="loading" role="status">Loading the case evidence…</div>
+    <div id="workspace" class="workspace" hidden>
+      <div class="scene-column">
+        <section class="panel scene-panel" aria-labelledby="scene-heading">
+          <div class="panel-heading"><div><p class="eyebrow">01 / FOLLOW THE CLAIM</p><h2 id="scene-heading">The connection under investigation</h2></div><span class="live-dot">EVIDENCE SCHEMATIC</span></div>
+          <div class="filter-bar"><span id="mode-label">Show Hypotheses</span><label class="toggle-label"><input type="checkbox" id="documented-only"><span class="switch" aria-hidden="true"></span>Documented Only</label></div>
+          <div class="schematic" id="scene">
+            <svg viewBox="0 0 720 280" role="img" aria-labelledby="diagram-title diagram-desc">
+              <title id="diagram-title">Conceptual road-to-monitoring-site evidence relationship</title>
+              <desc id="diagram-desc">A hypothetical connection links a generic road candidate to a documented USGS station. This is not a geographic route or a drainage map.</desc>
+              <defs><pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M 28 0 L 0 0 0 28" fill="none" stroke="#233342" stroke-width="0.6"/></pattern><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#eab66d" stroke-width="1.5"/></marker></defs>
+              <rect width="720" height="280" fill="url(#grid)"/>
+              <text x="26" y="30" class="svg-meta">CONCEPTUAL ONLY · NOT TO SCALE</text>
+              <g id="road-symbol"><rect x="92" y="95" width="116" height="78" rx="12" fill="#192633" stroke="#4b5b69"/><path d="M115 135 H185" stroke="#70818f" stroke-width="18"/><path d="M115 135 H185" stroke="#d4dce2" stroke-width="2" stroke-dasharray="10 7"/><text x="150" y="201" text-anchor="middle" class="svg-label">Road candidate</text><text x="150" y="221" text-anchor="middle" class="svg-meta">NO SPECIFIC ROAD VERIFIED</text></g>
+              <g id="candidate-link-001" data-feature-id="candidate-link-001"><path id="connection-path" d="M218 134 C300 134 320 134 420 134 L490 134" fill="none" stroke="#eab66d" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrow)"/><rect x="285" y="113" width="134" height="39" rx="19" fill="#25271f" stroke="#b18a50"/><text x="352" y="137" text-anchor="middle" fill="#eac085" font-size="12" font-family="monospace">UNVERIFIED LINK</text><text x="352" y="188" text-anchor="middle" class="svg-meta">PATHWAY NOT ESTABLISHED</text></g>
+              <g id="station-01401000" data-feature-id="station-01401000"><circle cx="550" cy="134" r="46" fill="#122d32" stroke="#33737a"/><circle cx="550" cy="134" r="26" fill="#153e42" stroke="#69d4cc"/><path d="M539 135 L547 143 L563 125" fill="none" stroke="#7ee3d6" stroke-width="3"/><text x="550" y="201" text-anchor="middle" class="svg-label">Stony Brook station</text><text x="550" y="221" text-anchor="middle" class="svg-meta">USGS–01401000 / MAPPED</text></g>
+            </svg>
+            <button class="diagram-hit connection-hit" id="select-connection" aria-label="Inspect possible road-to-stream connection"></button>
+            <button class="diagram-hit station-hit" id="select-station" aria-label="Inspect mapped Stony Brook station"></button>
+            <div id="hidden-message" class="hidden-message" hidden>Unsupported connection removed.<small>The documented station remains.</small></div>
+          </div>
+          <div class="scene-footer"><div class="legend"><span><i class="legend-dot"></i>Documented location</span><span><i class="legend-dash"></i>Hypothesis</span></div><span id="feature-count" aria-live="polite"></span></div>
+          <p class="scene-note">This diagram represents an evidence question, not a pipe or mapped flow path.</p>
+        </section>
+        <section class="panel ledger-panel" aria-labelledby="ledger-heading"><div class="panel-heading compact"><h2 id="ledger-heading">Case evidence</h2><span class="muted">SELECT A CLAIM TO INSPECT</span></div><div id="claim-list" class="claim-list"></div></section>
+        <section class="station-record"><div><p class="eyebrow">VERIFIED LOCATION / WGS84</p><strong>Stony Brook at Princeton NJ</strong><p>40.333056° N · 74.681944° W <span>USGS–01401000</span></p></div><a href="https://www.openstreetmap.org/?mlat=40.3330555555556&amp;mlon=-74.6819444444445#map=15/40.33306/-74.68194" target="_blank" rel="noopener noreferrer">View geographic map ↗</a></section>
+      </div>
+      <aside id="inspector" class="panel inspector" aria-labelledby="inspector-heading" tabindex="-1">
+        <div class="panel-heading"><div><p class="eyebrow">02 / PROVE IT</p><h2 id="inspector-heading">Evidence inspector</h2></div><span class="audit-icon" aria-hidden="true">⌕</span></div>
+        <div id="claim-detail"></div>
+      </aside>
+    </div>
+    <footer class="page-footer"><span>SaltShadow 2.0 <span class="footer-divider">/</span> HackPrinceton · Sustainability</span><span>A missing record is a reason to investigate.</span></footer>
+  </main>
+</body>
+</html>

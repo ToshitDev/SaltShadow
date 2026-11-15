@@ -185,27 +185,35 @@
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-    updateMapStatus('MAP LOADING');
-    mapLoadTimer = window.setTimeout(() => {
-      $('map-slow-message').hidden = false;
-      updateMapStatus('MAP DELAYED');
-    }, 4500);
-    let tileFailed = false;
-    tiles.once('load', () => {
+    });
+    let successfulTiles = 0;
+    let failedTiles = 0;
+    const startTileLoadCycle = () => {
+      successfulTiles = 0;
+      failedTiles = 0;
       window.clearTimeout(mapLoadTimer);
       $('map-slow-message').hidden = true;
-      updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE');
-    });
-    tiles.on('tileerror', () => {
-      if (!tileFailed) {
-        tileFailed = true;
-        window.clearTimeout(mapLoadTimer);
-        $('map-slow-message').hidden = true;
+      updateMapStatus('MAP LOADING');
+      mapLoadTimer = window.setTimeout(() => {
+        $('map-slow-message').hidden = false;
+        updateMapStatus('MAP DELAYED');
+      }, 4500);
+    };
+    tiles.on('loading', startTileLoadCycle);
+    tiles.on('tileload', () => { successfulTiles += 1; });
+    tiles.on('tileerror', () => { failedTiles += 1; });
+    tiles.on('load', () => {
+      window.clearTimeout(mapLoadTimer);
+      $('map-slow-message').hidden = true;
+      if (successfulTiles > 0) {
+        $('map-fallback').hidden = true;
+        updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE');
+      } else if (failedTiles > 0) {
         $('map-fallback').hidden = false;
         updateMapStatus('MAP OFFLINE');
       }
     });
+    tiles.addTo(map);
   }
 
   function coordinateFor(site) {

@@ -90,6 +90,12 @@
     renderReplay();
   }
 
+  function selectReplayStage(index) {
+    pauseReplay();
+    replayIndex = Math.max(0, Math.min(REPLAY_STAGES.length - 1, index));
+    renderReplay();
+  }
+
   function initTimeline() {
     REPLAY_STAGES.forEach((stage, index) => {
       const label = document.createElement('button');
@@ -97,13 +103,28 @@
       label.className = 'timeline-label';
       label.textContent = String(index + 1).padStart(2, '0');
       label.setAttribute('aria-label', 'Show replay stage ' + (index + 1) + ': ' + stage[0]);
-      label.addEventListener('click', () => { pauseReplay(); replayIndex = index; renderReplay(); });
+      label.addEventListener('click', () => selectReplayStage(index));
       $('timeline-labels').append(label);
     });
     $('play-button').addEventListener('click', startReplay);
     $('pause-button').addEventListener('click', pauseReplay);
     $('step-button').addEventListener('click', () => { pauseReplay(); advanceReplay(); });
     $('reset-button').addEventListener('click', () => { pauseReplay(); replayIndex = 0; renderReplay(); });
+    $('timeline-labels').addEventListener('keydown', (event) => {
+      if (!event.target.classList.contains('timeline-label') || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      const nextIndex = Math.max(0, Math.min(REPLAY_STAGES.length - 1, replayIndex + direction));
+      selectReplayStage(nextIndex);
+      [...$('timeline-labels').querySelectorAll('.timeline-label')][nextIndex].focus();
+    });
+    $('rewind').addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && replayTimer !== null) {
+        event.preventDefault();
+        pauseReplay();
+        $('pause-button').focus();
+      }
+    });
     renderReplay();
   }
 

@@ -42,14 +42,14 @@
     </section>
 
     <section class="dashboard-grid">
-      <article id="rewind" class="panel timeline-panel">
+      <article id="rewind" class="panel timeline-panel" aria-keyshortcuts="Escape ArrowLeft ArrowRight">
         <div class="panel-heading"><div><p class="section-kicker">01 / REWIND</p><h2>Storm replay</h2></div><span id="replay-status" class="status-pill">PAUSED</span></div>
         <div class="timeline-display" aria-live="polite">
           <p id="timeline-step" class="timeline-number">01</p>
           <div><p id="timeline-title" class="timeline-title">Before the event</p><p id="timeline-description">Set the investigation context before weather records are loaded.</p><p id="timeline-state" class="timeline-state">Paused at the first illustrative stage.</p></div>
         </div>
         <div class="track" aria-hidden="true"><div id="timeline-progress" class="track-fill"></div></div>
-        <div id="timeline-labels" class="timeline-labels" aria-label="Replay stages"></div>
+        <div id="timeline-labels" class="timeline-labels" aria-label="Replay stages"><span class="sr-only">Use left and right arrow keys on a stage to move through the illustrative replay. Press Escape to pause.</span></div>
         <div class="timeline-controls" aria-label="Storm replay controls">
           <button id="play-button" class="button button-primary" type="button" aria-pressed="false">Play</button>
           <button id="pause-button" class="button button-secondary" type="button">Pause</button>

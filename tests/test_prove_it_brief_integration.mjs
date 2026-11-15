@@ -14,7 +14,7 @@ const investigationUrl = dataModule(source('../investigation.js').replace("'./ev
 const proveItUrl = dataModule(source('../prove-it.js')
   .replace("'./evidence.js'", `'${evidenceUrl}'`)
   .replace("'./investigation.js'", `'${investigationUrl}'`));
-const adapterUrl = dataModule(source('../case-study-evidence-adapter.mjs'));
+const adapterUrl = dataModule(source('../case-study-evidence-adapter.mjs').replace("'./evidence.js'", `'${evidenceUrl}'`));
 const { adaptCaseStudyForEvidence } = await import(adapterUrl);
 const { createEvidenceEngine } = await import(evidenceUrl);
 const { buildEvidenceBrief } = await import(proveItUrl);
@@ -37,9 +37,10 @@ test('Prove It brief preserves calculator output and keeps the runoff hypothesis
     scenario
   });
 
-  assert.deepEqual(engine.getVisibleFeatures('documented').map((feature) => feature.id), ['stony-brook-gage-001']);
+  assert.deepEqual(engine.getVisibleFeatures('documented').map((feature) => feature.id), ['station-01401000']);
   assert.equal(engine.evaluateClaim('hypothesis-runoff-001').result, 'NOT PROVEN');
-  assert.deepEqual(brief.visibleFeatureIds, ['stony-brook-gage-001']);
+  assert.equal(engine.getClaimById('scenario-assumption-001').status, 'ASSUMED');
+  assert.deepEqual(brief.visibleFeatureIds, ['station-01401000']);
   assert.equal(brief.investigation.chlorideData.state, 'GAP');
   assert.deepEqual(brief.scenario, scenario);
   assert.equal(brief.challenged, true);

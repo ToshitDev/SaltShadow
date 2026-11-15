@@ -13,6 +13,12 @@
   <header class="topbar">
     <a class="brand" href="#top" aria-label="SaltShadow home"><span class="brand-mark">S</span><span>Salt<span class="brand-accent">Shadow</span></span></a>
     <p class="topbar-note">Environmental investigation workspace</p>
+    <nav class="flow-nav" aria-label="Investigation flow">
+      <a href="#rewind">Rewind</a>
+      <a href="#investigate">Investigate</a>
+      <a href="#intervene">Intervene</a>
+      <a href="#prove-it">Prove It</a>
+    </nav>
     <a class="export-link" href="#export">Decision brief <span aria-hidden="true">↓</span></a>
   </header>
 
@@ -36,8 +42,29 @@
     </section>
 
     <section class="dashboard-grid">
-      <article class="panel map-panel">
-        <div class="panel-heading"><div><p class="section-kicker">01 / REWIND</p><h2>Princeton-area view</h2></div><span class="live-dot">MAP READY</span></div>
+      <article id="rewind" class="panel timeline-panel">
+        <div class="panel-heading"><div><p class="section-kicker">01 / REWIND</p><h2>Storm replay</h2></div><span id="replay-status" class="status-pill">PAUSED</span></div>
+        <div class="timeline-display" aria-live="polite">
+          <p id="timeline-step" class="timeline-number">01</p>
+          <div><p id="timeline-title" class="timeline-title">Before the event</p><p id="timeline-description">Set the investigation context before weather records are loaded.</p><p id="timeline-state" class="timeline-state">Paused at the first illustrative stage.</p></div>
+        </div>
+        <div class="track" aria-hidden="true"><div id="timeline-progress" class="track-fill"></div></div>
+        <div id="timeline-labels" class="timeline-labels" aria-label="Replay stages"></div>
+        <div class="timeline-controls" aria-label="Storm replay controls">
+          <button id="play-button" class="button button-primary" type="button" aria-pressed="false">Play</button>
+          <button id="pause-button" class="button button-secondary" type="button">Pause</button>
+          <button id="step-button" class="button button-secondary" type="button">Step forward</button>
+          <button id="reset-button" class="button button-secondary" type="button">Reset</button>
+        </div>
+      </article>
+
+      <article id="investigate" class="panel map-panel">
+        <div class="panel-heading"><div><p class="section-kicker">02 / INVESTIGATE</p><h2>Princeton-area view</h2></div><span id="map-status" class="status-pill">AWAITING SITE</span></div>
+        <div class="site-picker">
+          <label for="monitoring-site-select">Monitoring site</label>
+          <select id="monitoring-site-select" disabled aria-describedby="site-picker-help"><option>No verified monitoring site loaded</option></select>
+          <p id="site-picker-help">A selectable location appears only when verified identity and coordinates are supplied in the shared case-study record.</p>
+        </div>
         <div class="map-wrap">
           <div id="map" aria-label="Interactive map centered on Princeton, New Jersey"></div>
           <div id="map-message" class="map-message"><strong>Monitoring location pending verification</strong><span>Verified station coordinates still need to be loaded. No site or pollution path is shown.</span></div>
@@ -46,22 +73,7 @@
         <p class="map-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. A map center is not evidence of a monitoring location or drainage path.</p>
       </article>
 
-      <article class="panel timeline-panel">
-        <div class="panel-heading"><div><p class="section-kicker">02 / INVESTIGATE</p><h2>Storm replay</h2></div><span class="status-pill">DEMO MODE</span></div>
-        <div class="timeline-display">
-          <p id="timeline-step" class="timeline-number">00</p>
-          <div><p id="timeline-title" class="timeline-title">Before the event</p><p id="timeline-description">Set the investigation context before weather records are loaded.</p></div>
-        </div>
-        <div class="track" aria-hidden="true"><div id="timeline-progress" class="track-fill"></div></div>
-        <div id="timeline-labels" class="timeline-labels"></div>
-        <div class="timeline-controls" aria-label="Storm replay controls">
-          <button id="play-button" class="button button-primary" type="button">Play</button>
-          <button id="pause-button" class="button button-secondary" type="button">Pause</button>
-          <button id="reset-button" class="button button-secondary" type="button">Reset</button>
-        </div>
-      </article>
-
-      <article class="panel scenario-panel">
+      <article id="intervene" class="panel scenario-panel">
         <div class="panel-heading"><div><p class="section-kicker">03 / INTERVENE</p><h2>Salt-use scenario</h2></div><span class="status-pill amber">ASSUMED</span></div>
         <p class="small-copy">Illustrative scenario, not actual municipal treatment data. Road safety and stream chloride impacts are not modeled.</p>
         <form id="scenario-form" class="scenario-form" novalidate>
@@ -80,7 +92,7 @@
         <p class="safety-gate">⚠ Requires local professional road-safety review before any operational change.</p>
       </article>
 
-      <article class="panel evidence-panel">
+      <article id="prove-it" class="panel evidence-panel">
         <div class="panel-heading"><div><p class="section-kicker">04 / PROVE IT</p><h2>Evidence overview</h2></div><span class="status-pill">INTEGRATION READY</span></div>
         <p class="small-copy">A shared claims array can be attached here by the Prove It engine. This starter does not present claim verification as complete.</p>
         <div class="evidence-legend">
@@ -90,7 +102,7 @@
           <div><b class="legend assumed">ASSUMED</b><span>User-entered or simulated scenario input.</span></div>
           <div><b class="legend unknown">UNKNOWN</b><span>A visible evidence gap requiring further checks.</span></div>
         </div>
-        <div id="claims-integration" class="integration-slot"><strong>Claims integration point</strong><span>Awaiting <code>data/case_study.json</code> and a shared <code>claims[]</code> contract.</span></div>
+        <div id="claims-integration" class="integration-slot" aria-live="polite"><strong>Claims integration point</strong><span>Data unavailable: awaiting <code>data/case_study.json</code> and Rithvik’s shared <code>claims[]</code> module.</span></div>
       </article>
     </section>
 

@@ -453,7 +453,9 @@
     };
     let result;
     try {
-      result = SaltEngine.calculate(...['lane-miles', 'application-rate', 'reduction-percent', 'price-per-ton'].map(readInputNumber));
+      result = SaltEngine.calculate(...[
+        'lane-miles', 'application-rate', 'reduction-percent', 'price-per-ton'
+      ].map(readInputNumber));
     } catch (error) {
       setExportStatus('Cannot export: ' + error.message, true);
       return;

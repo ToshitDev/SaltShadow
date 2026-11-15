@@ -73,6 +73,11 @@
         </section>
         <div class="map-wrap">
           <div id="map" aria-label="Interactive map centered on Princeton, New Jersey"></div>
+          <div class="map-layer-key" aria-label="Map layer and uncertainty legend">
+            <strong>MAP LAYERS</strong>
+            <span><i class="map-key-dot base-map" aria-hidden="true"></i>OpenStreetMap base map</span>
+            <span id="map-evidence-layer"><i class="map-key-dot no-evidence" aria-hidden="true"></i>No verified evidence layer loaded</span>
+          </div>
           <div id="map-message" class="map-message"><strong>Monitoring location pending verification</strong><span>Verified station coordinates still need to be loaded. No site or pollution path is shown.</span></div>
           <div id="map-fallback" class="map-fallback" hidden><strong>Map tiles unavailable</strong><span>The investigation still uses this Princeton-area map reference. Check your internet connection to restore tiles.</span></div>
         </div>

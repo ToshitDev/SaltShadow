@@ -162,6 +162,14 @@
     $('map-status').textContent = text;
   }
 
+  function setMapEvidenceLayer(label, stateClass) {
+    const layer = $('map-evidence-layer');
+    const dot = document.createElement('i');
+    dot.className = 'map-key-dot ' + stateClass;
+    dot.setAttribute('aria-hidden', 'true');
+    layer.replaceChildren(dot, document.createTextNode(label));
+  }
+
   function initMap() {
     if (!window.L) {
       $('map-fallback').hidden = false;
@@ -236,6 +244,7 @@
       select.disabled = true;
       setMapMessage('Monitoring location pending verification', 'Verified station coordinates still need to be loaded. No site or pollution path is shown.');
       updateMapStatus(map ? 'AWAITING SITE' : 'MAP OFFLINE');
+      setMapEvidenceLayer('No verified evidence layer loaded', 'no-evidence');
       renderMonitoringInfo(null);
       return;
     }
@@ -249,6 +258,7 @@
     const coordinates = site && coordinateFor(site);
     if (!coordinates) return;
     selectedSite = site;
+    setMapEvidenceLayer('Verified mapped location only — no flow path', 'mapped-evidence');
     renderMonitoringInfo(site);
     setMapMessage('Selected verified monitoring location', site.name + '. Mapping a station location does not establish chloride data, drainage connectivity, or source responsibility.');
     if (map && window.L) {

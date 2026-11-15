@@ -18,6 +18,7 @@
   let activeCase = null;
   let verifiedSites = [];
   let selectedSite = null;
+  let exportStatusTimer = null;
 
   function numberFormat(value) {
     return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(value);
@@ -330,6 +331,19 @@
     return sources;
   }
 
+  function setExportStatus(message, isError) {
+    const status = $('export-status');
+    window.clearTimeout(exportStatusTimer);
+    status.textContent = message;
+    status.dataset.error = String(Boolean(isError));
+    if (!isError) {
+      exportStatusTimer = window.setTimeout(() => {
+        status.textContent = '';
+        status.dataset.error = 'false';
+      }, 3500);
+    }
+  }
+
   function buildBrief() {
     const inputs = {
       laneMiles: $('lane-miles').value,
@@ -341,7 +355,7 @@
     try {
       result = SaltEngine.calculate(Number(inputs.laneMiles), Number(inputs.rateLbPerLaneMile), Number(inputs.reductionPercent), Number(inputs.priceUsdPerShortTon));
     } catch (error) {
-      window.alert('Correct the scenario inputs before exporting: ' + error.message);
+      setExportStatus('Cannot export: ' + error.message, true);
       return;
     }
     const dataAvailability = selectedSite
@@ -373,14 +387,19 @@
       'Prove It claim review and documented-only filtering are not included in this frontend integration point yet.', '',
       'Sources', ...caseStudySources()
     ];
-    const blob = new Blob([lines.join('\n') + '\n'], { type: 'text/plain;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'saltshadow-decision-brief.txt';
-    document.body.append(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(link.href);
+    try {
+      const blob = new Blob([lines.join('\n') + '\n'], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'saltshadow-decision-brief.txt';
+      document.body.append(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(link.href);
+      setExportStatus('Decision brief downloaded with current limitations and assumptions.', false);
+    } catch (_) {
+      setExportStatus('Unable to create the decision brief in this browser.', true);
+    }
   }
 
   function init() {

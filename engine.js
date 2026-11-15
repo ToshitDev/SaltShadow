@@ -19,7 +19,7 @@
     if (value < min || value > max) {
       throw new RangeError(name + ' must be between ' + min + ' and ' + max + '.');
     }
-    return value;
+    return Object.is(value, -0) ? 0 : value;
   }
 
   function calculate(laneMiles, applicationRate, reductionPercent, pricePerShortTon) {
@@ -30,7 +30,7 @@
 
     const baselineSaltLb = miles * rate;
     const scenarioSaltLb = baselineSaltLb * (1 - reduction / 100);
-    const saltSavedLb = baselineSaltLb - scenarioSaltLb;
+    const saltSavedLb = baselineSaltLb * (reduction / 100);
     const costSavedUsd = (saltSavedLb / 2000) * price;
 
     return Object.freeze({

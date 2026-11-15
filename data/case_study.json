@@ -1,0 +1,285 @@
+{
+  "schemaVersion": 1,
+  "caseId": "princeton-nj-2026-01-storm-stony-brook",
+  "event": {
+    "name": "January 25–26, 2026 Princeton-area winter storm",
+    "startDate": "2026-01-25",
+    "endDate": "2026-01-26",
+    "timezone": "America/New_York",
+    "sourceName": "Rutgers New Jersey State Climate Office January 2026 Report",
+    "sourceUrl": "https://climate.rutgers.edu/articles/january-2026-report",
+    "recordType": "DOCUMENTED_EVENT",
+    "uncertainty": "January 25–26 is the case-study investigation window. NOAA's Mercer County event record covers January 25 only (04:30–23:00 EST). Neither source provides an hourly weather series or a measurement at the stream gage.",
+    "weatherSummary": {
+      "princetonReportedSnowfall": {
+        "value": 10.0,
+        "units": "in",
+        "measurementType": "REPORTED_STORM_TOTAL",
+        "location": "Princeton, Mercer County, New Jersey, USA",
+        "timeResolution": "storm_total",
+        "observedAt": null,
+        "sourceName": "Rutgers New Jersey State Climate Office, January 2026 Report, Table 4",
+        "sourceUrl": "https://climate.rutgers.edu/articles/january-2026-report",
+        "sourceMethodNote": "Rutgers attributes the observations collectively to CoCoRaHS, NWS Cooperative Observer and NWS spotter reports; the individual Princeton reporter and exact time are not identified in the table.",
+        "limitation": "A storm-total report for Princeton, not an hourly series or stream-gage measurement."
+      }
+    },
+    "additionalEventRecords": [
+      {
+        "sourceId": "noaa-ncei-1309897",
+        "sourceName": "NOAA NCEI Storm Events Database, event 1309897",
+        "sourceUrl": "https://www.ncei.noaa.gov/stormevents/eventdetails.jsp?id=1309897",
+        "recordType": "DOCUMENTED_REGIONAL_EVENT",
+        "eventId": "1309897",
+        "eventType": "Winter Storm",
+        "location": "Mercer County, New Jersey, USA",
+        "beginDateTime": "2026-01-25T04:30:00-05:00",
+        "endDateTime": "2026-01-25T23:00:00-05:00",
+        "timezoneLabel": "EST-5",
+        "timeResolution": "event_record_interval",
+        "reportSource": "CoCoRaHS",
+        "highestReportedStormTotal": {
+          "value": 10.0,
+          "units": "in",
+          "measurementType": "HIGHEST_REPORTED_STORM_TOTAL",
+          "precipitationType": "snow and sleet",
+          "location": "Princeton, Mercer County, New Jersey, USA",
+          "timeResolution": "storm_total",
+          "observedAt": null
+        },
+        "sourceMethodNote": "NOAA's event narrative reports storm total snow and sleet accumulations of 7 to 10 inches for Mercer County and states that the highest report received was 10.0 inches in Princeton. The record lists CoCoRaHS as its report source; the individual reporter and observation time are not identified.",
+        "limitation": "A county-level event record for January 25, 2026, not an hourly series or stream-gage measurement. It does not cover January 26. The NOAA and Rutgers Princeton totals have not been confirmed to be independent observations."
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2026-01-25",
+        "title": "Documented winter storm",
+        "description": "Rutgers reports pre-dawn snowfall moving into New Jersey on January 25. No site-specific hourly weather series has been verified.",
+        "recordType": "DOCUMENTED_NARRATIVE",
+        "sourceUrl": "https://climate.rutgers.edu/articles/january-2026-report"
+      },
+      {
+        "date": "2026-01-26",
+        "title": "Case-study event window ends",
+        "description": "This is a case-study milestone, not an individual observed weather or chloride measurement.",
+        "recordType": "EVENT_WINDOW_MARKER",
+        "sourceUrl": "https://climate.rutgers.edu/articles/january-2026-report"
+      }
+    ]
+  },
+  "site": {
+    "stationId": "USGS-01401000",
+    "name": "Stony Brook at Princeton NJ",
+    "siteType": "Stream",
+    "verified": true,
+    "verifiedScope": "Station identity and published location only; not chloride data, drainage connectivity, or pollutant sources.",
+    "latitude": 40.3330555555556,
+    "longitude": -74.6819444444445,
+    "coordinateDatum": "WGS84",
+    "coordinateAccuracyNote": "USGS reports approximate location accuracy of plus or minus one second of latitude/longitude.",
+    "county": "Mercer County",
+    "state": "New Jersey",
+    "country": "USA",
+    "drainageAreaSquareMiles": 44.5,
+    "sourceName": "USGS Water Data for the Nation",
+    "sourceUrl": "https://waterdata.usgs.gov/monitoring-location/USGS-01401000/"
+  },
+  "observations": [],
+  "chlorideDataStatus": "NO_EVENT_MATCHED_CHLORIDE_OBSERVATIONS_VERIFIED",
+  "claims": [
+    {
+      "id": "hypothesis-runoff-001",
+      "text": "Road-salt runoff from an unidentified nearby road could reach this stream.",
+      "shortLabel": "Possible road → stream connection",
+      "claimType": "CONNECTION",
+      "status": "INFERRED",
+      "verified": false,
+      "sourceName": null,
+      "sourceUrl": null,
+      "observedAt": null,
+      "stationId": "USGS-01401000",
+      "units": null,
+      "method": null,
+      "uncertainty": "No road-specific treatment records, validated drainage connection, matched chloride samples, or causal attribution have been verified.",
+      "supports": [
+        "USGS documents a stream monitoring location on Stony Brook at Princeton NJ (USGS-01401000).",
+        "Rutgers and NOAA document a winter storm affecting Princeton and Mercer County on January 25, 2026."
+      ],
+      "supportingClaimIds": ["station-location-001"],
+      "doesNotEstablish": [
+        "A connected drainage pathway from any particular road or outfall to Stony Brook.",
+        "Road-salt application on any particular road during this event.",
+        "A chloride concentration, a chloride change, or road-specific causation at this station."
+      ],
+      "nextEvidenceNeeded": [
+        "Validate outfalls and drainage direction for any candidate road-to-stream pathway.",
+        "Obtain road-salt maintenance records and collect appropriately designed upstream/downstream chloride samples."
+      ],
+      "evidenceGaps": ["connectivity", "application", "chloride", "sampling", "timing"],
+      "featureIds": ["candidate-link-001"],
+      "relatedFeatureIds": ["candidate-link-001"]
+    },
+    {
+      "id": "station-location-001",
+      "text": "USGS identifies and maps the Stony Brook at Princeton NJ stream monitoring location (01401000).",
+      "shortLabel": "Stony Brook monitoring location",
+      "claimType": "LOCATION",
+      "status": "MAPPED",
+      "verified": true,
+      "sourceName": "USGS Water Data for the Nation",
+      "sourceUrl": "https://waterdata.usgs.gov/monitoring-location/USGS-01401000/",
+      "observedAt": null,
+      "stationId": "USGS-01401000",
+      "units": null,
+      "method": "USGS published station metadata",
+      "uncertainty": "USGS reports approximate location accuracy of plus or minus one second of latitude/longitude. Station metadata does not establish event-matched chloride measurements or drainage connectivity.",
+      "supports": [
+        "The station identity (USGS-01401000, Stony Brook at Princeton NJ) and its site type (Stream).",
+        "The published WGS84 coordinates and 44.5 square mile drainage area in Mercer County, New Jersey."
+      ],
+      "doesNotEstablish": [
+        "Chloride measurements at this station for January 25–26, 2026.",
+        "Drainage connectivity between any road and the stream.",
+        "A causal link between road salt and water quality."
+      ],
+      "nextEvidenceNeeded": [
+        "Locate dated chloride samples for the station.",
+        "Verify drainage connections separately."
+      ],
+      "evidenceGaps": ["chloride", "method", "timing"],
+      "featureIds": ["station-01401000"],
+      "relatedFeatureIds": ["station-01401000"]
+    },
+    {
+      "id": "chloride-gap-001",
+      "text": "Chloride concentration at this station during the January 2026 storm has not been established by the sources reviewed.",
+      "shortLabel": "Event-matched chloride evidence",
+      "claimType": "DATA_GAP",
+      "status": "UNKNOWN",
+      "verified": false,
+      "sourceName": "USGS, Water Quality Portal, and NJ Salt Watch",
+      "sourceUrl": "https://waterdata.usgs.gov/monitoring-location/USGS-01401000/",
+      "observedAt": null,
+      "stationId": "USGS-01401000",
+      "units": null,
+      "method": null,
+      "uncertainty": "Not verified does not mean no measurement exists. Raw event-matched result records have not been fully audited.",
+      "supports": [
+        "The case contains no verified event-matched chloride observations; the observations array is empty.",
+        "The sources reviewed did not yield an independently verified chloride result for this station and event; original result exports were not retrieved or audited."
+      ],
+      "doesNotEstablish": [
+        "That chloride was zero, low, or unchanged during the storm.",
+        "A chloride increase or decrease at this station.",
+        "That no chloride measurements exist for this station or event."
+      ],
+      "nextEvidenceNeeded": [
+        "Retrieve current original water-quality results for the station.",
+        "Verify site, time, parameter, method, units, qualifiers, and source for each result."
+      ],
+      "evidenceGaps": ["chloride", "method", "timing"],
+      "featureIds": [],
+      "relatedFeatureIds": []
+    },
+    {
+      "id": "scenario-assumption-001",
+      "text": "A hypothetical reduction in road-salt application can be explored as an illustrative material-use scenario.",
+      "shortLabel": "Treatment scenario assumptions",
+      "claimType": "SCENARIO",
+      "status": "ASSUMED",
+      "verified": false,
+      "sourceName": null,
+      "sourceUrl": null,
+      "observedAt": null,
+      "stationId": null,
+      "units": null,
+      "method": "Deterministic material and material-only cost arithmetic (SaltEngine.calculate)",
+      "uncertainty": "Scenario inputs are illustrative assumptions, not Princeton municipal treatment records, a verified purchase price, or a validated environmental model.",
+      "supports": [
+        "The stated hypothetical inputs allow deterministic calculation of salt quantities and a material-only cost difference."
+      ],
+      "doesNotEstablish": [
+        "Actual Princeton treatment quantities, application rates, salt prices, or municipal savings.",
+        "Any change in stream chloride concentration.",
+        "Roadway safety at any treatment level."
+      ],
+      "nextEvidenceNeeded": [
+        "Obtain dated road-salt application records from the responsible road agencies.",
+        "Request a local professional road-safety review before evaluating any operational change."
+      ],
+      "evidenceGaps": ["application", "safety"],
+      "featureIds": [],
+      "relatedFeatureIds": []
+    }
+  ],
+  "mapFeatures": [
+    {
+      "id": "station-01401000",
+      "kind": "MONITORING_STATION",
+      "claimId": "station-location-001",
+      "status": "MAPPED",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.6819444444445, 40.3330555555556]
+      },
+      "showAsVerified": true
+    },
+    {
+      "id": "candidate-link-001",
+      "kind": "HYPOTHETICAL_CONNECTION",
+      "claimId": "hypothesis-runoff-001",
+      "status": "INFERRED",
+      "geometry": null,
+      "presentation": "CONCEPTUAL_SCHEMATIC_ONLY",
+      "showAsVerified": false
+    }
+  ],
+  "scenarioDefaults": {
+    "laneMiles": 6,
+    "rateLbPerLaneMile": 250,
+    "reductionPct": 20,
+    "priceUsdPerShortTon": 105,
+    "status": "ASSUMED"
+  },
+  "sources": [
+    {
+      "id": "rutgers-jan-2026",
+      "name": "Rutgers New Jersey State Climate Office January 2026 Report",
+      "url": "https://climate.rutgers.edu/articles/january-2026-report",
+      "supports": "January 25 storm and Princeton 10.0-inch reported snow/sleet storm total"
+    },
+    {
+      "id": "noaa-ncei-1309897",
+      "name": "NOAA NCEI Storm Events Database, event 1309897",
+      "url": "https://www.ncei.noaa.gov/stormevents/eventdetails.jsp?id=1309897",
+      "supports": "Mercer County winter storm on January 25, 2026 (04:30–23:00 EST) and a highest reported snow and sleet storm total of 10.0 inches in Princeton"
+    },
+    {
+      "id": "usgs-01401000",
+      "name": "USGS Stony Brook monitoring-location metadata",
+      "url": "https://waterdata.usgs.gov/monitoring-location/USGS-01401000/",
+      "supports": "USGS station identity, WGS84 coordinates, site type, drainage area"
+    },
+    {
+      "id": "wqp-site-usgs",
+      "name": "Water Quality Portal monitoring-location summary",
+      "url": "https://waterqualitydata.us/provider/NWIS/USGS-NJ/USGS-01401000/",
+      "supports": "Historical station information, not verified January 2026 chloride samples"
+    },
+    {
+      "id": "nj-salt-watch",
+      "name": "NJ Salt Watch",
+      "url": "https://njwatershedwatch.org/road-salt/",
+      "supports": "Community chloride monitoring program; no exact matching result established"
+    }
+  ],
+  "limitations": [
+    "No event-matched chloride measurement has been verified for USGS-01401000.",
+    "Princeton's snowfall is a reported storm total, not a station-specific hourly series.",
+    "No particular road, outfall, transport route, or road-salt contribution has been proven.",
+    "All salt scenario inputs and costs are hypothetical.",
+    "An empty observations array means no verified matching records in this case, not zero chloride.",
+    "January 25–26 is the case-study investigation window; NOAA's event record covers January 25, 2026 only."
+  ]
+}

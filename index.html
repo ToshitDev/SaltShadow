@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="SaltShadow: an honest winter-storm road-salt investigation starter.">
   <title>SaltShadow — Winter Storm Crime Scene</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css">
@@ -13,6 +14,12 @@
   <header class="topbar">
     <a class="brand" href="#top" aria-label="SaltShadow home"><span class="brand-mark">S</span><span>Salt<span class="brand-accent">Shadow</span></span></a>
     <p class="topbar-note">Environmental investigation workspace</p>
+    <nav class="flow-nav" aria-label="Investigation flow">
+      <a href="#rewind">Rewind</a>
+      <a href="#investigate">Investigate</a>
+      <a href="#intervene">Intervene</a>
+      <a href="#prove-it">Prove It</a>
+    </nav>
     <a class="export-link" href="#export">Decision brief <span aria-hidden="true">↓</span></a>
   </header>
 
@@ -23,11 +30,29 @@
         <h1>The Winter Storm<br><em>Crime Scene.</em></h1>
         <p class="hero-copy">Explore a Princeton-area winter-storm investigation without turning uncertainty into a conclusion.</p>
       </div>
-      <div class="case-card">
+      <div id="case-card" class="case-card" aria-live="polite">
         <p class="card-label">ACTIVE CASE</p>
         <strong id="case-name">Princeton-area winter storm replay</strong>
         <p id="case-state">No verified case-study record loaded</p>
       </div>
+    </section>
+
+    <section class="problem-statement" aria-labelledby="problem-heading">
+      <div class="problem-copy">
+        <p class="section-kicker">THE INVESTIGATION QUESTION</p>
+        <h2 id="problem-heading">Where does road salt go after a winter storm, and what evidence do we need to understand its potential impact on local waterways?</h2>
+        <p>SaltShadow follows the evidence trail—from a documented storm, to a verified monitoring location, to the records still needed before anyone can claim a connection or water-quality impact.</p>
+        <div class="problem-actions" aria-label="Start the investigation">
+          <a class="button button-primary" href="#investigate">Inspect the case <span aria-hidden="true">↓</span></a>
+          <a class="text-action" href="#prove-it">Review the evidence ledger <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <ol class="journey-steps" aria-label="SaltShadow investigation flow">
+        <li><span>01</span><strong>Rewind</strong><small>Set the storm context.</small></li>
+        <li><span>02</span><strong>Investigate</strong><small>Locate what is documented.</small></li>
+        <li><span>03</span><strong>Intervene</strong><small>Compare hypothetical material use.</small></li>
+        <li><span>04</span><strong>Prove It</strong><small>Separate evidence from open questions.</small></li>
+      </ol>
     </section>
 
     <section class="notice illustrative" role="note">
@@ -35,33 +60,68 @@
       <div><strong>ILLUSTRATIVE DEMONSTRATION</strong><br>Timeline stages are a replay foundation, not verified historical weather observations or measured chloride changes.</div>
     </section>
 
+    <section class="investigation-progress" aria-labelledby="progress-heading">
+      <div class="progress-intro"><p class="section-kicker">WHAT WE KNOW NOW</p><h2 id="progress-heading">A guided evidence trail, not a pollution detector.</h2><p>Each status tells visitors what the current Princeton case can support—and what it cannot.</p></div>
+      <div class="progress-grid">
+        <article class="progress-card is-documented"><span>DOCUMENTED</span><strong>Winter storm</strong><p>January 25–26, 2026 is the source-audited investigation window.</p></article>
+        <article class="progress-card is-mapped"><span>MAPPED</span><strong>Monitoring station</strong><p>USGS identifies Stony Brook at Princeton NJ as a verified location.</p></article>
+        <article class="progress-card is-inferred"><span>INFERRED</span><strong>Possible connection</strong><p>A road-to-stream route is a hypothesis, not a mapped or proven path.</p></article>
+        <article class="progress-card is-unknown"><span>UNKNOWN</span><strong>Chloride response</strong><p>No event-matched chloride observation has been verified in this case.</p></article>
+        <article class="progress-card is-assumed"><span>ASSUMED</span><strong>Salt-use scenario</strong><p>Calculator inputs explore material use only; they do not model impacts.</p></article>
+      </div>
+    </section>
+
     <section class="dashboard-grid">
-      <article class="panel map-panel">
-        <div class="panel-heading"><div><p class="section-kicker">01 / REWIND</p><h2>Princeton-area view</h2></div><span class="live-dot">MAP READY</span></div>
+      <article id="rewind" class="panel timeline-panel" aria-keyshortcuts="Escape ArrowLeft ArrowRight">
+        <div class="panel-heading"><div><p class="section-kicker">01 / REWIND</p><h2>Storm replay</h2></div><span id="replay-status" class="status-pill">PAUSED</span></div>
+        <div class="timeline-display" aria-live="polite">
+          <p id="timeline-step" class="timeline-number">01</p>
+          <div><p id="timeline-title" class="timeline-title">Before the event</p><p id="timeline-description">Set the investigation context before weather records are loaded.</p><p id="timeline-state" class="timeline-state">Paused at the first illustrative stage.</p></div>
+        </div>
+        <div class="track" aria-hidden="true"><div id="timeline-progress" class="track-fill"></div></div>
+        <div id="timeline-labels" class="timeline-labels" aria-label="Replay stages"><span class="sr-only">Use left and right arrow keys on a stage to move through the illustrative replay. Press Escape to pause.</span></div>
+        <div class="timeline-controls" aria-label="Storm replay controls">
+          <button id="play-button" class="button button-primary" type="button" aria-pressed="false">Play</button>
+          <button id="pause-button" class="button button-secondary" type="button">Pause</button>
+          <button id="step-button" class="button button-secondary" type="button">Step forward</button>
+          <button id="reset-button" class="button button-secondary" type="button">Reset</button>
+        </div>
+      </article>
+
+      <article id="investigate" class="panel map-panel">
+        <div class="panel-heading"><div><p class="section-kicker">02 / INVESTIGATE</p><h2>Princeton-area view</h2></div><span id="map-status" class="status-pill">AWAITING SITE</span></div>
+        <section class="investigation-narrative" aria-labelledby="investigation-story-heading">
+          <div><p class="section-kicker">CASE THREAD</p><h3 id="investigation-story-heading">A documented winter storm meets a verified place to investigate.</h3></div>
+          <p>The January 25–26, 2026 Princeton-area winter storm provides the investigation window. The verified Stony Brook monitoring station gives the team a specific location to check—not proof that road salt reached the stream.</p>
+          <p>What is missing: event-matched chloride observations, validated drainage connectivity, and road-specific treatment records. Those gaps keep the runoff question <strong>INFERRED</strong>, not established.</p>
+          <div class="investigation-actions"><a href="#prove-it">Inspect evidence gaps <span aria-hidden="true">→</span></a><a href="#intervene">Compare a salt-use scenario <span aria-hidden="true">→</span></a></div>
+        </section>
+        <div class="site-picker">
+          <label for="monitoring-site-select">Monitoring site</label>
+          <select id="monitoring-site-select" disabled aria-describedby="site-picker-help"><option>No verified monitoring site loaded</option></select>
+          <p id="site-picker-help">A selectable location appears only when verified identity and coordinates are supplied in the shared case-study record.</p>
+        </div>
+        <section class="monitoring-info" aria-live="polite" aria-label="Monitoring location details">
+          <p class="card-label">LOCATION DETAILS</p>
+          <h3 id="monitoring-name">No verified monitoring location loaded</h3>
+          <p id="monitoring-details">Load a source-audited case study to inspect a mapped monitoring location. No chloride measurement is implied by this state.</p>
+          <a id="monitoring-source" href="#" target="_blank" rel="noreferrer" hidden>Open supplied location source <span aria-hidden="true">↗</span></a>
+        </section>
         <div class="map-wrap">
           <div id="map" aria-label="Interactive map centered on Princeton, New Jersey"></div>
+          <div class="map-layer-key" aria-label="Map layer and uncertainty legend">
+            <strong>MAP LAYERS</strong>
+            <span><i class="map-key-dot base-map" aria-hidden="true"></i>OpenStreetMap base map</span>
+            <span id="map-evidence-layer"><i class="map-key-dot no-evidence" aria-hidden="true"></i>No verified evidence layer loaded</span>
+          </div>
+          <div id="map-slow-message" class="map-slow-message" role="status" hidden><strong id="map-network-title">Map tiles are delayed</strong><span id="map-network-detail">The Princeton-area reference remains available; site and evidence status are unchanged.</span></div>
           <div id="map-message" class="map-message"><strong>Monitoring location pending verification</strong><span>Verified station coordinates still need to be loaded. No site or pollution path is shown.</span></div>
           <div id="map-fallback" class="map-fallback" hidden><strong>Map tiles unavailable</strong><span>The investigation still uses this Princeton-area map reference. Check your internet connection to restore tiles.</span></div>
         </div>
         <p class="map-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. A map center is not evidence of a monitoring location or drainage path.</p>
       </article>
 
-      <article class="panel timeline-panel">
-        <div class="panel-heading"><div><p class="section-kicker">02 / INVESTIGATE</p><h2>Storm replay</h2></div><span class="status-pill">DEMO MODE</span></div>
-        <div class="timeline-display">
-          <p id="timeline-step" class="timeline-number">00</p>
-          <div><p id="timeline-title" class="timeline-title">Before the event</p><p id="timeline-description">Set the investigation context before weather records are loaded.</p></div>
-        </div>
-        <div class="track" aria-hidden="true"><div id="timeline-progress" class="track-fill"></div></div>
-        <div id="timeline-labels" class="timeline-labels"></div>
-        <div class="timeline-controls" aria-label="Storm replay controls">
-          <button id="play-button" class="button button-primary" type="button">Play</button>
-          <button id="pause-button" class="button button-secondary" type="button">Pause</button>
-          <button id="reset-button" class="button button-secondary" type="button">Reset</button>
-        </div>
-      </article>
-
-      <article class="panel scenario-panel">
+      <article id="intervene" class="panel scenario-panel">
         <div class="panel-heading"><div><p class="section-kicker">03 / INTERVENE</p><h2>Salt-use scenario</h2></div><span class="status-pill amber">ASSUMED</span></div>
         <p class="small-copy">Illustrative scenario, not actual municipal treatment data. Road safety and stream chloride impacts are not modeled.</p>
         <form id="scenario-form" class="scenario-form" novalidate>
@@ -77,12 +137,58 @@
           <div class="result"><span>Not applied</span><strong id="saved-result">—</strong><small>pounds</small></div>
           <div class="result"><span>Material-only difference</span><strong id="cost-result">—</strong><small>USD</small></div>
         </div>
+        <p id="scenario-summary" class="scenario-summary" aria-live="polite">Adjust the assumed inputs to compare calculated material quantities.</p>
         <p class="safety-gate">⚠ Requires local professional road-safety review before any operational change.</p>
+        <section class="scenario-comparison" aria-labelledby="comparison-title">
+          <h3 id="comparison-title">Compare reductions</h3>
+          <div id="scenario-presets" class="scenario-presets" role="group" aria-label="Hypothetical salt reductions">
+            <button class="scenario-preset" type="button" data-reduction="10" aria-pressed="false">
+              <span class="preset-title">10% Less Salt</span>
+              <span class="preset-metric">Total salt applied<strong data-metric="scenarioSaltLb">—</strong></span>
+              <span class="preset-metric">Salt not applied<strong data-metric="saltSavedLb">—</strong></span>
+              <span class="preset-metric">Material-only cost difference<strong data-metric="costSavedUsd">—</strong></span>
+            </button>
+            <button class="scenario-preset" type="button" data-reduction="20" aria-pressed="true">
+              <span class="preset-title">20% Less Salt</span>
+              <span class="preset-metric">Total salt applied<strong data-metric="scenarioSaltLb">—</strong></span>
+              <span class="preset-metric">Salt not applied<strong data-metric="saltSavedLb">—</strong></span>
+              <span class="preset-metric">Material-only cost difference<strong data-metric="costSavedUsd">—</strong></span>
+            </button>
+            <button class="scenario-preset" type="button" data-reduction="30" aria-pressed="false">
+              <span class="preset-title">30% Less Salt</span>
+              <span class="preset-metric">Total salt applied<strong data-metric="scenarioSaltLb">—</strong></span>
+              <span class="preset-metric">Salt not applied<strong data-metric="saltSavedLb">—</strong></span>
+              <span class="preset-metric">Material-only cost difference<strong data-metric="costSavedUsd">—</strong></span>
+            </button>
+          </div>
+          <p class="comparison-note">Illustrative material comparisons only. Road-safety and water-quality outcomes are not modeled.</p>
+        </section>
+        <section class="salt-guidance" aria-labelledby="guidance-title">
+          <h3 id="guidance-title">Salt Use Guidance</h3>
+          <div class="guidance-inputs">
+            <label for="pavement-temperature">Pavement temperature (°F)<input id="pavement-temperature" type="number" step="any" placeholder="Unknown" inputmode="decimal"></label>
+            <label for="road-condition">Road condition<select id="road-condition">
+              <option value="unknown">Unknown</option>
+              <option value="snow">Snow</option>
+              <option value="ice">Ice or freezing rain</option>
+              <option value="frost">Frost</option>
+            </select></label>
+          </div>
+          <p id="guidance-result" class="guidance-result" role="status" aria-live="polite"></p>
+          <p class="guidance-sources"><a id="guidance-source" href="https://www.fhwa.dot.gov/publications/research/safety/95202/003.cfm" target="_blank" rel="noreferrer">FHWA anti-icing practices ↗</a> · <a href="https://www.nj.gov/transportation/about/winter/" target="_blank" rel="noreferrer">NJDOT winter overview ↗</a></p>
+          <p class="guidance-context">Educational guidance; not operational instructions or a guaranteed safe rate.</p>
+          <details class="freshwater-note">
+            <summary>What about freshwater?</summary>
+            <p>EPA’s freshwater aquatic-life criteria concern dissolved chloride in water, not salt spread on roads: 860 mg/L as a one-hour average (acute) and 230 mg/L as a four-day average (chronic), each not exceeded more than once every three years on average. These national recommendations address chloride associated with sodium; they are not universal safety guarantees.</p>
+            <p>The effect of this scenario on Stony Brook cannot be calculated with the existing case-study data; runoff paths and chloride concentrations are not modeled.</p>
+            <p><a href="https://www.epa.gov/wqc/national-recommended-water-quality-criteria-aquatic-life-criteria-table" target="_blank" rel="noreferrer">EPA current criteria table ↗</a> · <a href="https://www.epa.gov/sites/default/files/2018-08/documents/chloride-aquatic-life-criteria-1988.pdf#page=15" target="_blank" rel="noreferrer">Chloride criteria &amp; exposure durations, p. 8 ↗</a></p>
+          </details>
+        </section>
       </article>
 
-      <article class="panel evidence-panel">
+      <article id="prove-it" class="panel evidence-panel">
         <div class="panel-heading"><div><p class="section-kicker">04 / PROVE IT</p><h2>Evidence overview</h2></div><span class="status-pill">INTEGRATION READY</span></div>
-        <p class="small-copy">A shared claims array can be attached here by the Prove It engine. This starter does not present claim verification as complete.</p>
+        <p class="small-copy">Review the source-audited case record without turning hypotheses or data gaps into findings. Claim classifications and limits remain visible throughout.</p>
         <div class="evidence-legend">
           <div><b class="legend measured">MEASURED</b><span>Verified observation with source, time, units, and method.</span></div>
           <div><b class="legend mapped">MAPPED</b><span>Verified published location or feature; not a pollution finding.</span></div>
@@ -90,19 +196,39 @@
           <div><b class="legend assumed">ASSUMED</b><span>User-entered or simulated scenario input.</span></div>
           <div><b class="legend unknown">UNKNOWN</b><span>A visible evidence gap requiring further checks.</span></div>
         </div>
-        <div id="claims-integration" class="integration-slot"><strong>Claims integration point</strong><span>Awaiting <code>data/case_study.json</code> and a shared <code>claims[]</code> contract.</span></div>
+        <div id="claims-integration" class="integration-slot" aria-live="polite"><strong>Claims integration point</strong><span>Loading the source-audited case record before evidence can be reviewed.</span></div>
+        <div id="prove-it-dashboard" class="prove-it-dashboard" aria-busy="true">
+          <div class="prove-it-toolbar">
+            <label class="evidence-filter"><input id="documented-only" type="checkbox" disabled> Documented evidence only</label>
+            <p id="evidence-mode-status" class="evidence-mode-status">Awaiting validated evidence.</p>
+            <button id="evidence-export" class="button evidence-export" type="button" disabled>Export evidence brief <span aria-hidden="true">↓</span></button>
+          </div>
+          <p id="evidence-export-status" class="evidence-export-status" role="status" aria-live="polite"></p>
+          <div class="prove-it-content">
+            <section class="claim-ledger" aria-labelledby="claim-ledger-heading">
+              <h3 id="claim-ledger-heading">Claim ledger</h3>
+              <div id="prove-claim-list" class="prove-claim-list" aria-live="polite"></div>
+            </section>
+            <section id="prove-inspector" class="prove-inspector" aria-labelledby="inspector-heading" tabindex="-1">
+              <h3 id="inspector-heading">Evidence inspector</h3>
+              <p>Select a claim after the case record has been validated.</p>
+            </section>
+          </div>
+        </div>
       </article>
     </section>
 
     <section id="export" class="export-section">
       <div><p class="section-kicker">FIELD NOTE</p><h2>Make the uncertainty portable.</h2><p>Download a clear decision brief that distinguishes the scenario calculation from measured facts.</p></div>
-      <button id="export-button" class="button button-export" type="button">Export decision brief <span aria-hidden="true">↓</span></button>
+      <div class="export-actions"><button id="export-button" class="button button-export" type="button">Export decision brief <span aria-hidden="true">↓</span></button><p id="export-status" role="status" aria-live="polite"></p></div>
     </section>
   </main>
 
   <footer><span>SaltShadow</span><span>•</span><span>Winter Storm Crime Scene</span><span>•</span><span>Starter build</span></footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="engine.js"></script>
+  <script src="salt-guidance.js"></script>
   <script src="app.js"></script>
+  <script type="module" src="prove-it-integration.mjs"></script>
 </body>
 </html>

@@ -139,6 +139,51 @@
         </div>
         <p id="scenario-summary" class="scenario-summary" aria-live="polite">Adjust the assumed inputs to compare calculated material quantities.</p>
         <p class="safety-gate">⚠ Requires local professional road-safety review before any operational change.</p>
+        <section class="scenario-comparison" aria-labelledby="comparison-title">
+          <h3 id="comparison-title">Compare reductions</h3>
+          <div id="scenario-presets" class="scenario-presets" role="group" aria-label="Hypothetical salt reductions">
+            <button class="scenario-preset" type="button" data-reduction="10" aria-pressed="false">
+              <span class="preset-title">10% Less Salt</span>
+              <span class="preset-metric">Total salt applied<strong data-metric="scenarioSaltLb">—</strong></span>
+              <span class="preset-metric">Salt not applied<strong data-metric="saltSavedLb">—</strong></span>
+              <span class="preset-metric">Material-only cost difference<strong data-metric="costSavedUsd">—</strong></span>
+            </button>
+            <button class="scenario-preset" type="button" data-reduction="20" aria-pressed="true">
+              <span class="preset-title">20% Less Salt</span>
+              <span class="preset-metric">Total salt applied<strong data-metric="scenarioSaltLb">—</strong></span>
+              <span class="preset-metric">Salt not applied<strong data-metric="saltSavedLb">—</strong></span>
+              <span class="preset-metric">Material-only cost difference<strong data-metric="costSavedUsd">—</strong></span>
+            </button>
+            <button class="scenario-preset" type="button" data-reduction="30" aria-pressed="false">
+              <span class="preset-title">30% Less Salt</span>
+              <span class="preset-metric">Total salt applied<strong data-metric="scenarioSaltLb">—</strong></span>
+              <span class="preset-metric">Salt not applied<strong data-metric="saltSavedLb">—</strong></span>
+              <span class="preset-metric">Material-only cost difference<strong data-metric="costSavedUsd">—</strong></span>
+            </button>
+          </div>
+          <p class="comparison-note">Illustrative material comparisons only. Road-safety and water-quality outcomes are not modeled.</p>
+        </section>
+        <section class="salt-guidance" aria-labelledby="guidance-title">
+          <h3 id="guidance-title">Salt Use Guidance</h3>
+          <div class="guidance-inputs">
+            <label for="pavement-temperature">Pavement temperature (°F)<input id="pavement-temperature" type="number" step="any" placeholder="Unknown" inputmode="decimal"></label>
+            <label for="road-condition">Road condition<select id="road-condition">
+              <option value="unknown">Unknown</option>
+              <option value="snow">Snow</option>
+              <option value="ice">Ice or freezing rain</option>
+              <option value="frost">Frost</option>
+            </select></label>
+          </div>
+          <p id="guidance-result" class="guidance-result" role="status" aria-live="polite"></p>
+          <p class="guidance-sources"><a id="guidance-source" href="https://www.fhwa.dot.gov/publications/research/safety/95202/003.cfm" target="_blank" rel="noreferrer">FHWA anti-icing practices ↗</a> · <a href="https://www.nj.gov/transportation/about/winter/" target="_blank" rel="noreferrer">NJDOT winter overview ↗</a></p>
+          <p class="guidance-context">Educational guidance; not operational instructions or a guaranteed safe rate.</p>
+          <details class="freshwater-note">
+            <summary>What about freshwater?</summary>
+            <p>EPA’s freshwater aquatic-life criteria concern dissolved chloride in water, not salt spread on roads: 860 mg/L as a one-hour average (acute) and 230 mg/L as a four-day average (chronic), each not exceeded more than once every three years on average. These national recommendations address chloride associated with sodium; they are not universal safety guarantees.</p>
+            <p>The effect of this scenario on Stony Brook cannot be calculated with the existing case-study data; runoff paths and chloride concentrations are not modeled.</p>
+            <p><a href="https://www.epa.gov/wqc/national-recommended-water-quality-criteria-aquatic-life-criteria-table" target="_blank" rel="noreferrer">EPA current criteria table ↗</a> · <a href="https://www.epa.gov/sites/default/files/2018-08/documents/chloride-aquatic-life-criteria-1988.pdf#page=15" target="_blank" rel="noreferrer">Chloride criteria &amp; exposure durations, p. 8 ↗</a></p>
+          </details>
+        </section>
       </article>
 
       <article id="prove-it" class="panel evidence-panel">
@@ -182,6 +227,7 @@
   <footer><span>SaltShadow</span><span>•</span><span>Winter Storm Crime Scene</span><span>•</span><span>Starter build</span></footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="engine.js"></script>
+  <script src="salt-guidance.js"></script>
   <script src="app.js"></script>
   <script type="module" src="prove-it-integration.mjs"></script>
 </body>

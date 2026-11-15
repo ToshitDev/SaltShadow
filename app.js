@@ -30,6 +30,12 @@
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
   }
 
+  function tileAvailabilityState(successfulTiles, failedTiles, hasSuccessfulRenderedTiles) {
+    if (successfulTiles > 0) return failedTiles > 0 ? 'PARTIAL' : 'AVAILABLE';
+    if (hasSuccessfulRenderedTiles) return failedTiles > 0 ? 'PARTIAL' : 'AVAILABLE';
+    return failedTiles > 0 ? 'OFFLINE' : 'PENDING';
+  }
+
   function updateComparison(values) {
     document.querySelectorAll('.scenario-preset').forEach((card) => {
       const reduction = Number(card.dataset.reduction);
@@ -240,9 +246,9 @@
     });
     let successfulTiles = 0;
     let failedTiles = 0;
-    const hasRenderedTiles = () => {
+    const hasSuccessfulRenderedTiles = () => {
       const tileContainer = tiles.getContainer();
-      return Boolean(tileContainer && tileContainer.querySelector('.leaflet-tile.leaflet-tile-loaded'));
+      return Boolean(tileContainer && tileContainer.querySelector('[data-saltshadow-tile-state="success"]'));
     };
     const startTileLoadCycle = () => {
       successfulTiles = 0;
@@ -256,26 +262,28 @@
       }, 4500);
     };
     tiles.on('loading', startTileLoadCycle);
-    tiles.on('tileload', () => { successfulTiles += 1; });
+    tiles.on('tileload', (event) => {
+      successfulTiles += 1;
+      event.tile.dataset.saltshadowTileState = 'success';
+      // A successful tile is sufficient to dismiss a stale total-outage banner
+      // immediately; the completed batch below still reports partial failures.
+      $('map-fallback').hidden = true;
+    });
     tiles.on('tileerror', () => { failedTiles += 1; });
     tiles.on('load', () => {
       window.clearTimeout(mapLoadTimer);
       setMapNetworkNotice('', '', false);
-      if (successfulTiles > 0) {
+      const availability = tileAvailabilityState(successfulTiles, failedTiles, hasSuccessfulRenderedTiles());
+      if (availability === 'AVAILABLE') {
         $('map-fallback').hidden = true;
         updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE');
-      } else if (failedTiles > 0 && !hasRenderedTiles()) {
-        $('map-fallback').hidden = false;
-        updateMapStatus('MAP OFFLINE');
-      } else if (failedTiles > 0) {
+      } else if (availability === 'PARTIAL') {
         $('map-fallback').hidden = true;
         setMapNetworkNotice('Some tiles could not refresh', 'The existing base map is still visible. New map coverage may be incomplete until connectivity improves.', true);
         updateMapStatus('MAP PARTIAL');
-      } else if (hasRenderedTiles()) {
-        // A cached or previously rendered base map is usable even when this
-        // cycle produced no new tile events. Clear only a stale outage banner.
-        $('map-fallback').hidden = true;
-        updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE');
+      } else if (availability === 'OFFLINE') {
+        $('map-fallback').hidden = false;
+        updateMapStatus('MAP OFFLINE');
       }
     });
     tiles.addTo(map);

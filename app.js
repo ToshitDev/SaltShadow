@@ -174,6 +174,12 @@
     layer.replaceChildren(dot, document.createTextNode(label));
   }
 
+  function setMapNetworkNotice(title, detail, visible) {
+    $('map-network-title').textContent = title;
+    $('map-network-detail').textContent = detail;
+    $('map-slow-message').hidden = !visible;
+  }
+
   function initMap() {
     if (!window.L) {
       $('map-fallback').hidden = false;
@@ -188,14 +194,18 @@
     });
     let successfulTiles = 0;
     let failedTiles = 0;
+    const hasRenderedTiles = () => {
+      const tileContainer = tiles.getContainer();
+      return Boolean(tileContainer && tileContainer.querySelector('.leaflet-tile.leaflet-tile-loaded'));
+    };
     const startTileLoadCycle = () => {
       successfulTiles = 0;
       failedTiles = 0;
       window.clearTimeout(mapLoadTimer);
-      $('map-slow-message').hidden = true;
+      setMapNetworkNotice('', '', false);
       updateMapStatus('MAP LOADING');
       mapLoadTimer = window.setTimeout(() => {
-        $('map-slow-message').hidden = false;
+        setMapNetworkNotice('Map tiles are delayed', 'The Princeton-area reference remains available; site and evidence status are unchanged.', true);
         updateMapStatus('MAP DELAYED');
       }, 4500);
     };
@@ -204,13 +214,17 @@
     tiles.on('tileerror', () => { failedTiles += 1; });
     tiles.on('load', () => {
       window.clearTimeout(mapLoadTimer);
-      $('map-slow-message').hidden = true;
+      setMapNetworkNotice('', '', false);
       if (successfulTiles > 0) {
         $('map-fallback').hidden = true;
         updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE');
-      } else if (failedTiles > 0) {
+      } else if (failedTiles > 0 && !hasRenderedTiles()) {
         $('map-fallback').hidden = false;
         updateMapStatus('MAP OFFLINE');
+      } else if (failedTiles > 0) {
+        $('map-fallback').hidden = true;
+        setMapNetworkNotice('Some tiles could not refresh', 'The existing base map is still visible. New map coverage may be incomplete until connectivity improves.', true);
+        updateMapStatus('MAP PARTIAL');
       }
     });
     tiles.addTo(map);

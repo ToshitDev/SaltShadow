@@ -53,4 +53,30 @@ assert.equal(decimalRate.baselineSaltLb, 501);
 assert.equal(decimalRate.scenarioSaltLb, 250.5);
 assert.equal(decimalRate.saltSavedLb, 250.5);
 
+
+ // Test zero lane miles.
+const noRoad = SaltEngine.calculate(0, 250, 20, 105);
+assert.equal(noRoad.baselineSaltLb, 0);
+assert.equal(noRoad.scenarioSaltLb, 0);
+assert.equal(noRoad.saltSavedLb, 0);
+assert.equal(noRoad.costSavedUsd, 0);
+
+// Test zero salt application.
+const noSalt = SaltEngine.calculate(6, 0, 20, 105);
+assert.equal(noSalt.baselineSaltLb, 0);
+assert.equal(noSalt.saltSavedLb, 0);
+assert.equal(noSalt.costSavedUsd, 0);
+
+// Test zero material price.
+const freeSalt = SaltEngine.calculate(6, 250, 20, 0);
+assert.equal(freeSalt.saltSavedLb, 300);
+assert.equal(freeSalt.costSavedUsd, 0);
+
+// Test exact maximum allowed inputs.
+const maximum = SaltEngine.calculate(100000, 50000, 100, 100000);
+assert.equal(maximum.baselineSaltLb, 5000000000);
+assert.equal(maximum.scenarioSaltLb, 0);
+assert.equal(maximum.saltSavedLb, 5000000000);
+assert.equal(maximum.costSavedUsd, 250000000000);
+
 console.log('SaltEngine tests passed.');

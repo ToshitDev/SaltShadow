@@ -28,6 +28,9 @@ h1 em { color:#477049; font-weight:600; }
 .case-card { flex:0 0 290px; padding:20px 23px; border:1px solid #cad5bd; border-radius:9px; background:#e9efdb; box-shadow:7px 8px 0 #ced9b9; }
 .case-card strong { display:block; margin:10px 0 5px; font-size:15px; }
 .case-card p:last-child { margin:0; color:#536a5d; font-size:12px; line-height:1.35; }
+.case-card[data-state="loading"] { border-color:#d5d8ba; background:#f1f1df; }
+.case-card[data-state="unavailable"] { border-color:#e2cfa4; background:#fff7e5; }
+.case-card[data-state="unavailable"] .card-label { color:#8b6626; }
 .notice { display:flex; align-items:flex-start; gap:12px; max-width:825px; margin:0 0 27px; padding:13px 17px; border:1px solid #e6d69e; color:#57491e; background:#fff9df; font-size:13px; line-height:1.42; }
 .notice-icon { display:grid; flex:0 0 20px; place-items:center; height:20px; border-radius:50%; color:#fff; background:#c1912d; font-weight:700; }
 .notice strong { color:#7b611e; font:500 10px 'DM Mono',monospace; letter-spacing:.09em; }

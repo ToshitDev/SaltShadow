@@ -292,23 +292,29 @@
     $('claims-integration').replaceChildren(strong, span);
   }
 
+  function setCaseCardState(state, name, description) {
+    $('case-card').dataset.state = state;
+    $('case-name').textContent = name;
+    $('case-state').textContent = description;
+  }
+
   async function loadCaseStudy() {
+    setCaseCardState('loading', 'Checking case-study availability', 'Loading the shared record. The illustrated replay remains available without environmental measurements.');
+    setIntegrationMessage('Claims integration point', 'Loading the shared case-study record. No evidence claims are displayed while availability is checked.');
     try {
       const response = await fetch('data/case_study.json', { cache: 'no-store' });
       if (!response.ok) throw new Error('Case-study file unavailable');
       const data = await response.json();
       if (!data || !data.event || !Array.isArray(data.claims)) throw new Error('Case-study record does not match the shared contract');
       activeCase = data;
-      $('case-name').textContent = data.event.name || 'Loaded case study';
-      $('case-state').textContent = data.event.recordType || 'Case study loaded; source review status not supplied.';
+      setCaseCardState('loaded', data.event.name || 'Loaded case study', data.event.recordType || 'Case study loaded; source review status not supplied.');
       applyScenarioDefaults(data.scenarioDefaults);
       configureMonitoringSites(collectVerifiedSites(data));
       setIntegrationMessage('Claims integration point', data.claims.length + ' shared claim(s) loaded. Rithvik’s Prove It renderer remains responsible for reviewing and displaying claim evidence.');
       document.dispatchEvent(new CustomEvent('saltshadow:case-study-loaded', { detail: { caseStudy: data } }));
     } catch (error) {
       activeCase = null;
-      $('case-name').textContent = 'Princeton-area winter storm replay';
-      $('case-state').textContent = 'Data unavailable — no compatible verified case-study record loaded.';
+      setCaseCardState('unavailable', 'Princeton-area winter storm replay', 'Data unavailable — no compatible verified case-study record loaded. The replay and calculator remain illustrative.');
       configureMonitoringSites([]);
       setIntegrationMessage('Claims integration point', 'Data unavailable: awaiting data/case_study.json and Rithvik’s shared claims[] module. No evidence claims are displayed.');
       document.dispatchEvent(new CustomEvent('saltshadow:case-study-unavailable', { detail: { reason: error.message } }));

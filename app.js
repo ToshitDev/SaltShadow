@@ -18,6 +18,7 @@
   let activeCase = null;
   let verifiedSites = [];
   let selectedSite = null;
+  let currentScenarioResult = null;
   let exportStatusTimer = null;
   let mapLoadTimer = null;
 
@@ -41,10 +42,27 @@
       $('cost-result').textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result.costSavedUsd);
       $('scenario-summary').textContent = 'At ' + values[2] + '% reduction, this illustrative scenario calculates ' + numberFormat(result.saltSavedLb) + ' lb not applied and ' + new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result.costSavedUsd) + ' in material-only difference.';
       $('scenario-error').textContent = '';
+      // Shared read-only handoff for the evidence brief. These remain
+      // hypothetical material calculations, not environmental observations.
+      currentScenarioResult = {
+        state: 'HYPOTHETICAL_SCENARIO',
+        inputs: {
+          laneMiles: values[0],
+          applicationRateLbPerLaneMile: values[1],
+          reductionPercent: values[2],
+          priceUsdPerShortTon: values[3]
+        },
+        baselineSaltLb: result.baselineSaltLb,
+        scenarioSaltLb: result.scenarioSaltLb,
+        saltNotAppliedLb: result.saltSavedLb,
+        materialOnlyCostDifferenceUsd: result.costSavedUsd,
+        limitation: 'Illustrative scenario, not actual municipal treatment data. Road safety and stream chloride impacts are not modeled.'
+      };
     } catch (error) {
       ['baseline-result', 'scenario-result', 'saved-result', 'cost-result'].forEach((id) => { $(id).textContent = '—'; });
       $('scenario-error').textContent = error.message;
       $('scenario-summary').textContent = 'Enter valid non-negative assumptions to calculate material quantities and cost difference.';
+      currentScenarioResult = null;
     }
   }
 
@@ -228,6 +246,7 @@
       }
     });
     tiles.addTo(map);
+    document.dispatchEvent(new CustomEvent('saltshadow:map-ready', { detail: { map } }));
   }
 
   function coordinateFor(site) {
@@ -240,7 +259,22 @@
   function collectVerifiedSites(data) {
     const candidates = Array.isArray(data.monitoringSites) ? data.monitoringSites
       : Array.isArray(data.sites) ? data.sites : data.site ? [data.site] : [];
-    return candidates.filter((site) => site && site.verified === true && typeof site.name === 'string' && site.name.trim() && coordinateFor(site));
+    const claims = Array.isArray(data.claims) ? data.claims : [];
+    const features = Array.isArray(data.mapFeatures) ? data.mapFeatures : [];
+    return candidates.flatMap((site) => {
+      if (!site || typeof site.name !== 'string' || !site.name.trim()) return [];
+      if (site.verified === true && coordinateFor(site)) return [site];
+      // Hemanth's record documents verification on the MAPPED claim and its
+      // GeoJSON feature, rather than duplicating it on site. Only accept that
+      // exact, reciprocal relationship; no other coordinate is inferred here.
+      const claim = claims.find((item) => item && item.stationId === site.stationId && item.status === 'MAPPED' && item.verified === true && Array.isArray(item.featureIds));
+      const feature = claim && features.find((item) => item && item.claimId === claim.id && item.status === 'MAPPED' && item.showAsVerified === true && claim.featureIds.includes(item.id) && item.geometry && item.geometry.type === 'Point' && Array.isArray(item.geometry.coordinates));
+      const coordinates = feature && feature.geometry.coordinates;
+      const longitude = coordinates && Number(coordinates[0]);
+      const latitude = coordinates && Number(coordinates[1]);
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude) > 90 || Math.abs(longitude) > 180) return [];
+      return [{ ...site, verified: true, latitude, longitude }];
+    });
   }
 
   function safeHttpUrl(value) {
@@ -409,15 +443,15 @@
       'Hypothetical reduction: ' + inputs.reductionPercent + '%',
       'Salt price: $' + inputs.priceUsdPerShortTon + ' per US short ton', '',
       'Calculated material-only outputs',
-      'Baseline salt: ' + result.baselineSaltLb + ' lb',
-      'Scenario salt: ' + result.scenarioSaltLb + ' lb',
-      'Salt not applied: ' + result.saltSavedLb + ' lb',
+      'Baseline salt: ' + numberFormat(result.baselineSaltLb) + ' lb',
+      'Scenario salt: ' + numberFormat(result.scenarioSaltLb) + ' lb',
+      'Salt not applied: ' + numberFormat(result.saltSavedLb) + ' lb',
       'Estimated material-only cost difference: $' + result.costSavedUsd.toFixed(2), '',
       'Evidence limitations',
       'Scenario inputs are ASSUMED, not actual municipal treatment data.',
       'Road safety and stream chloride impacts are not modeled.',
       'No road-to-stream pollution path or specific road responsibility is established.',
-      'Prove It claim review and documented-only filtering are not included in this frontend integration point yet.', '',
+      'For claim verification and documented-only filtering, export the separate Prove It evidence brief from the Prove It panel.', '',
       'Sources', ...caseStudySources()
     ];
     try {
@@ -440,6 +474,14 @@
     $('scenario-form').addEventListener('submit', (event) => event.preventDefault());
     $('monitoring-site-select').addEventListener('change', (event) => selectMonitoringSite(verifiedSites[Number(event.target.value)]));
     $('export-button').addEventListener('click', buildBrief);
+    // This browser-only bridge lets separately loaded ES modules consume
+    // snapshots without turning the existing calculator into a module.
+    window.SaltShadowIntegration = Object.freeze({
+      getMap: () => map,
+      getSelectedSiteMarker: () => siteMarker,
+      getScenario: () => currentScenarioResult ? structuredClone(currentScenarioResult) : null,
+      getCaseStudy: () => activeCase ? structuredClone(activeCase) : null
+    });
     updateScenario();
     initTimeline();
     initStageNavigation();

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="SaltShadow: an honest winter-storm road-salt investigation starter.">
   <title>SaltShadow — Winter Storm Crime Scene</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css">
@@ -107,7 +108,7 @@
 
       <article id="prove-it" class="panel evidence-panel">
         <div class="panel-heading"><div><p class="section-kicker">04 / PROVE IT</p><h2>Evidence overview</h2></div><span class="status-pill">INTEGRATION READY</span></div>
-        <p class="small-copy">A shared claims array can be attached here by the Prove It engine. This starter does not present claim verification as complete.</p>
+        <p class="small-copy">Review the source-audited case record without turning hypotheses or data gaps into findings. Claim classifications and limits remain visible throughout.</p>
         <div class="evidence-legend">
           <div><b class="legend measured">MEASURED</b><span>Verified observation with source, time, units, and method.</span></div>
           <div><b class="legend mapped">MAPPED</b><span>Verified published location or feature; not a pollution finding.</span></div>
@@ -115,7 +116,25 @@
           <div><b class="legend assumed">ASSUMED</b><span>User-entered or simulated scenario input.</span></div>
           <div><b class="legend unknown">UNKNOWN</b><span>A visible evidence gap requiring further checks.</span></div>
         </div>
-        <div id="claims-integration" class="integration-slot" aria-live="polite"><strong>Claims integration point</strong><span>Data unavailable: awaiting <code>data/case_study.json</code> and Rithvik’s shared <code>claims[]</code> module.</span></div>
+        <div id="claims-integration" class="integration-slot" aria-live="polite"><strong>Claims integration point</strong><span>Loading the source-audited case record before evidence can be reviewed.</span></div>
+        <div id="prove-it-dashboard" class="prove-it-dashboard" aria-busy="true">
+          <div class="prove-it-toolbar">
+            <label class="evidence-filter"><input id="documented-only" type="checkbox" disabled> Documented evidence only</label>
+            <p id="evidence-mode-status" class="evidence-mode-status">Awaiting validated evidence.</p>
+            <button id="evidence-export" class="button evidence-export" type="button" disabled>Export evidence brief <span aria-hidden="true">↓</span></button>
+          </div>
+          <p id="evidence-export-status" class="evidence-export-status" role="status" aria-live="polite"></p>
+          <div class="prove-it-content">
+            <section class="claim-ledger" aria-labelledby="claim-ledger-heading">
+              <h3 id="claim-ledger-heading">Claim ledger</h3>
+              <div id="prove-claim-list" class="prove-claim-list" aria-live="polite"></div>
+            </section>
+            <section id="prove-inspector" class="prove-inspector" aria-labelledby="inspector-heading" tabindex="-1">
+              <h3 id="inspector-heading">Evidence inspector</h3>
+              <p>Select a claim after the case record has been validated.</p>
+            </section>
+          </div>
+        </div>
       </article>
     </section>
 
@@ -129,5 +148,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="engine.js"></script>
   <script src="app.js"></script>
+  <script type="module" src="prove-it-integration.mjs"></script>
 </body>
 </html>

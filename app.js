@@ -19,6 +19,7 @@
   let verifiedSites = [];
   let selectedSite = null;
   let exportStatusTimer = null;
+  let mapLoadTimer = null;
 
   function numberFormat(value) {
     return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(value);
@@ -186,11 +187,21 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
     updateMapStatus('MAP LOADING');
+    mapLoadTimer = window.setTimeout(() => {
+      $('map-slow-message').hidden = false;
+      updateMapStatus('MAP DELAYED');
+    }, 4500);
     let tileFailed = false;
-    tiles.once('load', () => updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE'));
+    tiles.once('load', () => {
+      window.clearTimeout(mapLoadTimer);
+      $('map-slow-message').hidden = true;
+      updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE');
+    });
     tiles.on('tileerror', () => {
       if (!tileFailed) {
         tileFailed = true;
+        window.clearTimeout(mapLoadTimer);
+        $('map-slow-message').hidden = true;
         $('map-fallback').hidden = false;
         updateMapStatus('MAP OFFLINE');
       }

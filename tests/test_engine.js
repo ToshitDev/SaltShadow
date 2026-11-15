@@ -31,4 +31,12 @@ const conversion = SaltEngine.calculate(8, 250, 100, 105);
 assert.equal(conversion.saltSavedLb, 2000);
 assert.equal(conversion.costSavedUsd, 105);
 
+// Additional input validation tests.
+assert.throws(() => SaltEngine.calculate("6", 250, 20, 105), TypeError);
+assert.throws(() => SaltEngine.calculate(6, NaN, 20, 105), TypeError);
+assert.throws(() => SaltEngine.calculate(6, 250, -10, 105), RangeError);
+assert.throws(() => SaltEngine.calculate(6, 250, 20, -5), RangeError);
+assert.throws(() => SaltEngine.calculate(100001, 250, 20, 105), RangeError);
+assert.throws(() => SaltEngine.calculate(6, 50001, 20, 105), RangeError);
+
 console.log('SaltEngine tests passed.');

@@ -1,6 +1,8 @@
 'use strict';
 const assert = require('node:assert/strict');
 const SaltEngine = require('../engine.js');
+const fs = require('node:fs');
+const vm = require('node:vm');
 
 // Normal scenario and required acceptance calculation.
 const normal = SaltEngine.calculate(6, 250, 20, 105);
@@ -100,5 +102,21 @@ const forty = SaltEngine.calculate(6, 250, 40, 105);
 
 assert.equal(forty.saltSavedLb, twenty.saltSavedLb * 2);
 assert.equal(forty.costSavedUsd, twenty.costSavedUsd * 2);
+
+// Test the calculator without Node.js module imports.
+const browser = {};
+
+vm.runInNewContext(
+  fs.readFileSync(require.resolve('../engine.js'), 'utf8'),
+  browser
+);
+
+assert.equal(typeof browser.SaltEngine.calculate, 'function');
+
+const browserResult = browser.SaltEngine.calculate(6, 250, 20, 105);
+assert.equal(browserResult.baselineSaltLb, 1500);
+assert.equal(browserResult.scenarioSaltLb, 1200);
+assert.equal(browserResult.saltSavedLb, 300);
+assert.equal(browserResult.costSavedUsd, 15.75);
 
 console.log('SaltEngine tests passed.');

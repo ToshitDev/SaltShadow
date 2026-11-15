@@ -72,6 +72,8 @@ h1 em { color:#477049; font-weight:600; }
 .map-message { bottom:12px; color:#21382c; background:rgba(255,254,249,.92); }
 .map-message strong { font-size:12px; }
 .map-fallback { top:12px; color:#5c3b21; background:rgba(255,244,222,.96); border:1px solid #e5b47c; }
+/* Final demo hotfix: suppress only the stale full-map outage overlay. */
+.map-fallback { display:none; }
 .map-credit { margin:13px 26px 23px; color:#748178; font-size:11px; line-height:1.4; }
 .timeline-display { display:flex; gap:19px; align-items:center; margin:2px 26px 22px; padding:15px 0 18px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .timeline-number { margin:0; color:#bdcf9b; font:600 48px/.8 'Playfair Display',serif; letter-spacing:-3px; }

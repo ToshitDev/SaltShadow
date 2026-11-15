@@ -11,6 +11,22 @@ assert.equal(normal.scenarioSaltLb, 1200);
 assert.equal(normal.saltSavedLb, 300);
 assert.equal(normal.costSavedUsd, 15.75);
 
+// All three comparison presets use the same material-only engine and rounding.
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+for (const [percent, applied, notApplied, cost] of [
+  [10, 1350, 150, '$7.88'],
+  [20, 1200, 300, '$15.75'],
+  [30, 1050, 450, '$23.63']
+]) {
+  const preset = SaltEngine.calculate(6, 250, percent, 105);
+  assert.equal(preset.scenarioSaltLb, applied);
+  assert.equal(preset.saltSavedLb, notApplied);
+  assert.equal(usd.format(preset.costSavedUsd), cost);
+  const doubled = SaltEngine.calculate(12, 250, percent, 105);
+  assert.equal(doubled.scenarioSaltLb, applied * 2);
+  assert.equal(doubled.saltSavedLb, notApplied * 2);
+}
+
 // 0% reduction keeps all salt applied and saves no material cost.
 const zero = SaltEngine.calculate(6, 250, 0, 105);
 assert.equal(zero.scenarioSaltLb, 1500);

@@ -1,4 +1,4 @@
-/* global L, SaltEngine */
+/* global L, SaltEngine, SaltGuidance */
 (function () {
   'use strict';
 
@@ -26,6 +26,33 @@
     return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(value);
   }
 
+  function currencyFormat(value) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+  }
+
+  function updateComparison(values) {
+    document.querySelectorAll('.scenario-preset').forEach((card) => {
+      const reduction = Number(card.dataset.reduction);
+      card.setAttribute('aria-pressed', String(reduction === values[2]));
+      let result = null;
+      try {
+        result = SaltEngine.calculate(values[0], values[1], reduction, values[3]);
+      } catch (_) { /* Invalid baseline inputs must not leave stale comparisons. */ }
+      card.querySelectorAll('[data-metric]').forEach((metric) => {
+        const key = metric.dataset.metric;
+        metric.textContent = !result ? '—' : key === 'costSavedUsd'
+          ? currencyFormat(result[key]) : numberFormat(result[key]) + ' lb';
+      });
+    });
+  }
+
+  function updateGuidance() {
+    const guidance = SaltGuidance.getGuidance(readInputNumber('pavement-temperature'), $('road-condition').value);
+    $('guidance-result').textContent = guidance.message;
+    $('guidance-source').href = guidance.sourceUrl;
+    $('guidance-source').textContent = guidance.sourceLabel;
+  }
+
   function readInputNumber(id) {
     const value = $(id).value.trim();
     return value === '' ? NaN : Number(value);
@@ -34,13 +61,14 @@
   function updateScenario() {
     const values = ['lane-miles', 'application-rate', 'reduction-percent', 'price-per-ton'].map(readInputNumber);
     $('reduction-output').textContent = Number.isFinite(values[2]) ? values[2] + '%' : '—';
+    updateComparison(values);
     try {
       const result = SaltEngine.calculate(...values);
       $('baseline-result').textContent = numberFormat(result.baselineSaltLb);
       $('scenario-result').textContent = numberFormat(result.scenarioSaltLb);
       $('saved-result').textContent = numberFormat(result.saltSavedLb);
-      $('cost-result').textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result.costSavedUsd);
-      $('scenario-summary').textContent = 'At ' + values[2] + '% reduction, this illustrative scenario calculates ' + numberFormat(result.saltSavedLb) + ' lb not applied and ' + new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result.costSavedUsd) + ' in material-only difference.';
+      $('cost-result').textContent = currencyFormat(result.costSavedUsd);
+      $('scenario-summary').textContent = 'At ' + values[2] + '% reduction, this illustrative scenario calculates ' + numberFormat(result.saltSavedLb) + ' lb not applied and ' + currencyFormat(result.costSavedUsd) + ' in material-only difference.';
       $('scenario-error').textContent = '';
       // Shared read-only handoff for the evidence brief. These remain
       // hypothetical material calculations, not environmental observations.
@@ -425,7 +453,7 @@
     };
     let result;
     try {
-      result = SaltEngine.calculate(Number(inputs.laneMiles), Number(inputs.rateLbPerLaneMile), Number(inputs.reductionPercent), Number(inputs.priceUsdPerShortTon));
+      result = SaltEngine.calculate(...['lane-miles', 'application-rate', 'reduction-percent', 'price-per-ton'].map(readInputNumber));
     } catch (error) {
       setExportStatus('Cannot export: ' + error.message, true);
       return;
@@ -451,7 +479,7 @@
       'Baseline salt: ' + numberFormat(result.baselineSaltLb) + ' lb',
       'Scenario salt: ' + numberFormat(result.scenarioSaltLb) + ' lb',
       'Salt not applied: ' + numberFormat(result.saltSavedLb) + ' lb',
-      'Estimated material-only cost difference: $' + result.costSavedUsd.toFixed(2), '',
+      'Estimated material-only cost difference: ' + currencyFormat(result.costSavedUsd), '',
       'Evidence limitations',
       'Scenario inputs are ASSUMED, not actual municipal treatment data.',
       'Road safety and stream chloride impacts are not modeled.',
@@ -477,6 +505,12 @@
   function init() {
     document.querySelectorAll('#scenario-form input').forEach((input) => input.addEventListener('input', updateScenario));
     $('scenario-form').addEventListener('submit', (event) => event.preventDefault());
+    document.querySelectorAll('.scenario-preset').forEach((card) => card.addEventListener('click', () => {
+      $('reduction-percent').value = card.dataset.reduction;
+      updateScenario();
+    }));
+    $('pavement-temperature').addEventListener('input', updateGuidance);
+    $('road-condition').addEventListener('change', updateGuidance);
     $('monitoring-site-select').addEventListener('change', (event) => selectMonitoringSite(verifiedSites[Number(event.target.value)]));
     $('export-button').addEventListener('click', buildBrief);
     // This browser-only bridge lets separately loaded ES modules consume
@@ -488,6 +522,7 @@
       getCaseStudy: () => activeCase ? structuredClone(activeCase) : null
     });
     updateScenario();
+    updateGuidance();
     initTimeline();
     initStageNavigation();
     initMap();

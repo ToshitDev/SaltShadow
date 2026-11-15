@@ -37,9 +37,38 @@
       </div>
     </section>
 
+    <section class="problem-statement" aria-labelledby="problem-heading">
+      <div class="problem-copy">
+        <p class="section-kicker">THE INVESTIGATION QUESTION</p>
+        <h2 id="problem-heading">Where does road salt go after a winter storm, and what evidence do we need to understand its potential impact on local waterways?</h2>
+        <p>SaltShadow follows the evidence trail—from a documented storm, to a verified monitoring location, to the records still needed before anyone can claim a connection or water-quality impact.</p>
+        <div class="problem-actions" aria-label="Start the investigation">
+          <a class="button button-primary" href="#investigate">Inspect the case <span aria-hidden="true">↓</span></a>
+          <a class="text-action" href="#prove-it">Review the evidence ledger <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <ol class="journey-steps" aria-label="SaltShadow investigation flow">
+        <li><span>01</span><strong>Rewind</strong><small>Set the storm context.</small></li>
+        <li><span>02</span><strong>Investigate</strong><small>Locate what is documented.</small></li>
+        <li><span>03</span><strong>Intervene</strong><small>Compare hypothetical material use.</small></li>
+        <li><span>04</span><strong>Prove It</strong><small>Separate evidence from open questions.</small></li>
+      </ol>
+    </section>
+
     <section class="notice illustrative" role="note">
       <span class="notice-icon">!</span>
       <div><strong>ILLUSTRATIVE DEMONSTRATION</strong><br>Timeline stages are a replay foundation, not verified historical weather observations or measured chloride changes.</div>
+    </section>
+
+    <section class="investigation-progress" aria-labelledby="progress-heading">
+      <div class="progress-intro"><p class="section-kicker">WHAT WE KNOW NOW</p><h2 id="progress-heading">A guided evidence trail, not a pollution detector.</h2><p>Each status tells visitors what the current Princeton case can support—and what it cannot.</p></div>
+      <div class="progress-grid">
+        <article class="progress-card is-documented"><span>DOCUMENTED</span><strong>Winter storm</strong><p>January 25–26, 2026 is the source-audited investigation window.</p></article>
+        <article class="progress-card is-mapped"><span>MAPPED</span><strong>Monitoring station</strong><p>USGS identifies Stony Brook at Princeton NJ as a verified location.</p></article>
+        <article class="progress-card is-inferred"><span>INFERRED</span><strong>Possible connection</strong><p>A road-to-stream route is a hypothesis, not a mapped or proven path.</p></article>
+        <article class="progress-card is-unknown"><span>UNKNOWN</span><strong>Chloride response</strong><p>No event-matched chloride observation has been verified in this case.</p></article>
+        <article class="progress-card is-assumed"><span>ASSUMED</span><strong>Salt-use scenario</strong><p>Calculator inputs explore material use only; they do not model impacts.</p></article>
+      </div>
     </section>
 
     <section class="dashboard-grid">
@@ -61,6 +90,12 @@
 
       <article id="investigate" class="panel map-panel">
         <div class="panel-heading"><div><p class="section-kicker">02 / INVESTIGATE</p><h2>Princeton-area view</h2></div><span id="map-status" class="status-pill">AWAITING SITE</span></div>
+        <section class="investigation-narrative" aria-labelledby="investigation-story-heading">
+          <div><p class="section-kicker">CASE THREAD</p><h3 id="investigation-story-heading">A documented winter storm meets a verified place to investigate.</h3></div>
+          <p>The January 25–26, 2026 Princeton-area winter storm provides the investigation window. The verified Stony Brook monitoring station gives the team a specific location to check—not proof that road salt reached the stream.</p>
+          <p>What is missing: event-matched chloride observations, validated drainage connectivity, and road-specific treatment records. Those gaps keep the runoff question <strong>INFERRED</strong>, not established.</p>
+          <div class="investigation-actions"><a href="#prove-it">Inspect evidence gaps <span aria-hidden="true">→</span></a><a href="#intervene">Compare a salt-use scenario <span aria-hidden="true">→</span></a></div>
+        </section>
         <div class="site-picker">
           <label for="monitoring-site-select">Monitoring site</label>
           <select id="monitoring-site-select" disabled aria-describedby="site-picker-help"><option>No verified monitoring site loaded</option></select>

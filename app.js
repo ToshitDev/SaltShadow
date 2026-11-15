@@ -243,6 +243,11 @@
         $('map-fallback').hidden = true;
         setMapNetworkNotice('Some tiles could not refresh', 'The existing base map is still visible. New map coverage may be incomplete until connectivity improves.', true);
         updateMapStatus('MAP PARTIAL');
+      } else if (hasRenderedTiles()) {
+        // A cached or previously rendered base map is usable even when this
+        // cycle produced no new tile events. Clear only a stale outage banner.
+        $('map-fallback').hidden = true;
+        updateMapStatus(selectedSite ? 'SITE SELECTED' : 'AWAITING SITE');
       }
     });
     tiles.addTo(map);

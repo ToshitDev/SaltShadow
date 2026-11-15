@@ -119,4 +119,9 @@ assert.equal(browserResult.scenarioSaltLb, 1200);
 assert.equal(browserResult.saltSavedLb, 300);
 assert.equal(browserResult.costSavedUsd, 15.75);
 
+// Small positive reductions should not become zero.
+const tiny = SaltEngine.calculate(6, 250, 1e-15, 105);
+assert.ok(tiny.saltSavedLb > 0);
+assert.ok(tiny.costSavedUsd > 0);
+
 console.log('SaltEngine tests passed.');

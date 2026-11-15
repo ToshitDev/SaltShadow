@@ -30,7 +30,7 @@
 
     const baselineSaltLb = miles * rate;
     const scenarioSaltLb = baselineSaltLb * (1 - reduction / 100);
-    const saltSavedLb = baselineSaltLb - scenarioSaltLb;
+    const saltSavedLb = baselineSaltLb * (reduction / 100);
     const costSavedUsd = (saltSavedLb / 2000) * price;
 
     return Object.freeze({

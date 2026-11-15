@@ -39,4 +39,18 @@ assert.throws(() => SaltEngine.calculate(6, 250, 20, -5), RangeError);
 assert.throws(() => SaltEngine.calculate(100001, 250, 20, 105), RangeError);
 assert.throws(() => SaltEngine.calculate(6, 50001, 20, 105), RangeError);
 
+
+ // Test fractional distance, reduction, and price.
+const fractional = SaltEngine.calculate(2.5, 200, 12.5, 80.5);
+assert.equal(fractional.baselineSaltLb, 500);
+assert.equal(fractional.scenarioSaltLb, 437.5);
+assert.equal(fractional.saltSavedLb, 62.5);
+assert.equal(fractional.costSavedUsd, 2.515625);
+
+// Test a fractional salt application rate.
+const decimalRate = SaltEngine.calculate(2, 250.5, 50, 100);
+assert.equal(decimalRate.baselineSaltLb, 501);
+assert.equal(decimalRate.scenarioSaltLb, 250.5);
+assert.equal(decimalRate.saltSavedLb, 250.5);
+
 console.log('SaltEngine tests passed.');

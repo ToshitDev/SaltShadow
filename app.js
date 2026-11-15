@@ -107,6 +107,28 @@
     renderReplay();
   }
 
+  function initStageNavigation() {
+    const links = [...document.querySelectorAll('.flow-nav a')];
+    const panels = links.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    const setActiveStage = (id) => links.forEach((link) => {
+      const active = link.getAttribute('href') === '#' + id;
+      link.classList.toggle('is-active', active);
+      if (active) link.setAttribute('aria-current', 'step');
+      else link.removeAttribute('aria-current');
+    });
+    links.forEach((link) => link.addEventListener('click', () => setActiveStage(link.hash.slice(1))));
+    if (!('IntersectionObserver' in window)) {
+      setActiveStage('rewind');
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActiveStage(visible.target.id);
+    }, { rootMargin: '-20% 0px -55% 0px', threshold: [0.15, 0.4, 0.7] });
+    panels.forEach((panel) => observer.observe(panel));
+    setActiveStage('rewind');
+  }
+
   function setMapMessage(title, message) {
     const strong = document.createElement('strong');
     const span = document.createElement('span');
@@ -300,6 +322,7 @@
     $('export-button').addEventListener('click', buildBrief);
     updateScenario();
     initTimeline();
+    initStageNavigation();
     initMap();
     loadCaseStudy();
   }

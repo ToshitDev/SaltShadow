@@ -199,6 +199,33 @@
     return candidates.filter((site) => site && site.verified === true && typeof site.name === 'string' && site.name.trim() && coordinateFor(site));
   }
 
+  function safeHttpUrl(value) {
+    try {
+      const url = new URL(value);
+      return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function renderMonitoringInfo(site) {
+    const sourceLink = $('monitoring-source');
+    if (!site) {
+      $('monitoring-name').textContent = 'No verified monitoring location loaded';
+      $('monitoring-details').textContent = 'Load a source-audited case study to inspect a mapped monitoring location. No chloride measurement is implied by this state.';
+      sourceLink.hidden = true;
+      sourceLink.removeAttribute('href');
+      return;
+    }
+    const stationId = typeof site.stationId === 'string' && site.stationId ? ' Station ID: ' + site.stationId + '.' : '';
+    $('monitoring-name').textContent = site.name;
+    $('monitoring-details').textContent = 'This is a verified mapped location from the supplied case study.' + stationId + ' Its presence does not establish event-matched chloride data, drainage connectivity, or source responsibility.';
+    const sourceUrl = safeHttpUrl(site.sourceUrl);
+    sourceLink.hidden = !sourceUrl;
+    if (sourceUrl) sourceLink.href = sourceUrl;
+    else sourceLink.removeAttribute('href');
+  }
+
   function configureMonitoringSites(sites) {
     const select = $('monitoring-site-select');
     verifiedSites = sites;
@@ -209,6 +236,7 @@
       select.disabled = true;
       setMapMessage('Monitoring location pending verification', 'Verified station coordinates still need to be loaded. No site or pollution path is shown.');
       updateMapStatus(map ? 'AWAITING SITE' : 'MAP OFFLINE');
+      renderMonitoringInfo(null);
       return;
     }
     select.disabled = false;
@@ -221,6 +249,7 @@
     const coordinates = site && coordinateFor(site);
     if (!coordinates) return;
     selectedSite = site;
+    renderMonitoringInfo(site);
     setMapMessage('Selected verified monitoring location', site.name + '. Mapping a station location does not establish chloride data, drainage connectivity, or source responsibility.');
     if (map && window.L) {
       if (siteMarker) map.removeLayer(siteMarker);

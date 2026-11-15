@@ -65,6 +65,12 @@
           <select id="monitoring-site-select" disabled aria-describedby="site-picker-help"><option>No verified monitoring site loaded</option></select>
           <p id="site-picker-help">A selectable location appears only when verified identity and coordinates are supplied in the shared case-study record.</p>
         </div>
+        <section class="monitoring-info" aria-live="polite" aria-label="Monitoring location details">
+          <p class="card-label">LOCATION DETAILS</p>
+          <h3 id="monitoring-name">No verified monitoring location loaded</h3>
+          <p id="monitoring-details">Load a source-audited case study to inspect a mapped monitoring location. No chloride measurement is implied by this state.</p>
+          <a id="monitoring-source" href="#" target="_blank" rel="noreferrer" hidden>Open supplied location source <span aria-hidden="true">↗</span></a>
+        </section>
         <div class="map-wrap">
           <div id="map" aria-label="Interactive map centered on Princeton, New Jersey"></div>
           <div id="map-message" class="map-message"><strong>Monitoring location pending verification</strong><span>Verified station coordinates still need to be loaded. No site or pollution path is shown.</span></div>

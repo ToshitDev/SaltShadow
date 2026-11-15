@@ -37,10 +37,12 @@
       $('scenario-result').textContent = numberFormat(result.scenarioSaltLb);
       $('saved-result').textContent = numberFormat(result.saltSavedLb);
       $('cost-result').textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result.costSavedUsd);
+      $('scenario-summary').textContent = 'At ' + values[2] + '% reduction, this illustrative scenario calculates ' + numberFormat(result.saltSavedLb) + ' lb not applied and ' + new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result.costSavedUsd) + ' in material-only difference.';
       $('scenario-error').textContent = '';
     } catch (error) {
       ['baseline-result', 'scenario-result', 'saved-result', 'cost-result'].forEach((id) => { $(id).textContent = '—'; });
       $('scenario-error').textContent = error.message;
+      $('scenario-summary').textContent = 'Enter valid non-negative assumptions to calculate material quantities and cost difference.';
     }
   }
 

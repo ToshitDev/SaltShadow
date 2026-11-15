@@ -19,7 +19,7 @@
     if (value < min || value > max) {
       throw new RangeError(name + ' must be between ' + min + ' and ' + max + '.');
     }
-    return value;
+    return Object.is(value, -0) ? 0 : value;
   }
 
   function calculate(laneMiles, applicationRate, reductionPercent, pricePerShortTon) {

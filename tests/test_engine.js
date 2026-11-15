@@ -124,4 +124,18 @@ const tiny = SaltEngine.calculate(6, 250, 1e-15, 105);
 assert.ok(tiny.saltSavedLb > 0);
 assert.ok(tiny.costSavedUsd > 0);
 
+// Negative zero must not appear in calculated results.
+for (const inputs of [
+  [-0, 250, 20, 105],
+  [6, -0, 20, 105],
+  [6, 250, -0, 105],
+  [6, 250, 20, -0]
+]) {
+  const result = SaltEngine.calculate(...inputs);
+
+  for (const value of Object.values(result)) {
+    assert.equal(Object.is(value, -0), false);
+  }
+}
+
 console.log('SaltEngine tests passed.');

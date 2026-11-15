@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SaltShadow: an honest winter-storm road-salt investigation starter.">
+  <title>SaltShadow — Winter Storm Crime Scene</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="SaltShadow home"><span class="brand-mark">S</span><span>Salt<span class="brand-accent">Shadow</span></span></a>
+    <p class="topbar-note">Environmental investigation workspace</p>
+    <a class="export-link" href="#export">Decision brief <span aria-hidden="true">↓</span></a>
+  </header>
+
+  <main id="top" class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">REWIND <span>→</span> INVESTIGATE <span>→</span> INTERVENE <span>→</span> PROVE IT</p>
+        <h1>The Winter Storm<br><em>Crime Scene.</em></h1>
+        <p class="hero-copy">Explore a Princeton-area winter-storm investigation without turning uncertainty into a conclusion.</p>
+      </div>
+      <div class="case-card">
+        <p class="card-label">ACTIVE CASE</p>
+        <strong id="case-name">Princeton-area winter storm replay</strong>
+        <p id="case-state">No verified case-study record loaded</p>
+      </div>
+    </section>
+
+    <section class="notice illustrative" role="note">
+      <span class="notice-icon">!</span>
+      <div><strong>ILLUSTRATIVE DEMONSTRATION</strong><br>Timeline stages are a replay foundation, not verified historical weather observations or measured chloride changes.</div>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel map-panel">
+        <div class="panel-heading"><div><p class="section-kicker">01 / REWIND</p><h2>Princeton-area view</h2></div><span class="live-dot">MAP READY</span></div>
+        <div class="map-wrap">
+          <div id="map" aria-label="Interactive map centered on Princeton, New Jersey"></div>
+          <div id="map-message" class="map-message"><strong>Monitoring location pending verification</strong><span>Verified station coordinates still need to be loaded. No site or pollution path is shown.</span></div>
+          <div id="map-fallback" class="map-fallback" hidden><strong>Map tiles unavailable</strong><span>The investigation still uses this Princeton-area map reference. Check your internet connection to restore tiles.</span></div>
+        </div>
+        <p class="map-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. A map center is not evidence of a monitoring location or drainage path.</p>
+      </article>
+
+      <article class="panel timeline-panel">
+        <div class="panel-heading"><div><p class="section-kicker">02 / INVESTIGATE</p><h2>Storm replay</h2></div><span class="status-pill">DEMO MODE</span></div>
+        <div class="timeline-display">
+          <p id="timeline-step" class="timeline-number">00</p>
+          <div><p id="timeline-title" class="timeline-title">Before the event</p><p id="timeline-description">Set the investigation context before weather records are loaded.</p></div>
+        </div>
+        <div class="track" aria-hidden="true"><div id="timeline-progress" class="track-fill"></div></div>
+        <div id="timeline-labels" class="timeline-labels"></div>
+        <div class="timeline-controls" aria-label="Storm replay controls">
+          <button id="play-button" class="button button-primary" type="button">Play</button>
+          <button id="pause-button" class="button button-secondary" type="button">Pause</button>
+          <button id="reset-button" class="button button-secondary" type="button">Reset</button>
+        </div>
+      </article>
+
+      <article class="panel scenario-panel">
+        <div class="panel-heading"><div><p class="section-kicker">03 / INTERVENE</p><h2>Salt-use scenario</h2></div><span class="status-pill amber">ASSUMED</span></div>
+        <p class="small-copy">Illustrative scenario, not actual municipal treatment data. Road safety and stream chloride impacts are not modeled.</p>
+        <form id="scenario-form" class="scenario-form" novalidate>
+          <label>Treated lane miles <input id="lane-miles" type="number" min="0" max="100000" step="0.1" value="6" inputmode="decimal"></label>
+          <label>Salt application rate <span>lb / lane-mile</span><input id="application-rate" type="number" min="0" max="50000" step="1" value="250" inputmode="decimal"></label>
+          <label>Hypothetical reduction <output id="reduction-output">20%</output><input id="reduction-percent" type="range" min="0" max="100" step="1" value="20"></label>
+          <label>Salt price <span>USD / US short ton</span><input id="price-per-ton" type="number" min="0" max="100000" step="0.01" value="105" inputmode="decimal"></label>
+        </form>
+        <p id="scenario-error" class="form-error" role="alert"></p>
+        <div class="results-grid" aria-live="polite">
+          <div class="result"><span>Baseline salt</span><strong id="baseline-result">—</strong><small>pounds</small></div>
+          <div class="result accent"><span>Scenario salt</span><strong id="scenario-result">—</strong><small>pounds</small></div>
+          <div class="result"><span>Not applied</span><strong id="saved-result">—</strong><small>pounds</small></div>
+          <div class="result"><span>Material-only difference</span><strong id="cost-result">—</strong><small>USD</small></div>
+        </div>
+        <p class="safety-gate">⚠ Requires local professional road-safety review before any operational change.</p>
+      </article>
+
+      <article class="panel evidence-panel">
+        <div class="panel-heading"><div><p class="section-kicker">04 / PROVE IT</p><h2>Evidence overview</h2></div><span class="status-pill">INTEGRATION READY</span></div>
+        <p class="small-copy">A shared claims array can be attached here by the Prove It engine. This starter does not present claim verification as complete.</p>
+        <div class="evidence-legend">
+          <div><b class="legend measured">MEASURED</b><span>Verified observation with source, time, units, and method.</span></div>
+          <div><b class="legend mapped">MAPPED</b><span>Verified published location or feature; not a pollution finding.</span></div>
+          <div><b class="legend inferred">INFERRED</b><span>A testable hypothesis, not established fact.</span></div>
+          <div><b class="legend assumed">ASSUMED</b><span>User-entered or simulated scenario input.</span></div>
+          <div><b class="legend unknown">UNKNOWN</b><span>A visible evidence gap requiring further checks.</span></div>
+        </div>
+        <div id="claims-integration" class="integration-slot"><strong>Claims integration point</strong><span>Awaiting <code>data/case_study.json</code> and a shared <code>claims[]</code> contract.</span></div>
+      </article>
+    </section>
+
+    <section id="export" class="export-section">
+      <div><p class="section-kicker">FIELD NOTE</p><h2>Make the uncertainty portable.</h2><p>Download a clear decision brief that distinguishes the scenario calculation from measured facts.</p></div>
+      <button id="export-button" class="button button-export" type="button">Export decision brief <span aria-hidden="true">↓</span></button>
+    </section>
+  </main>
+
+  <footer><span>SaltShadow</span><span>•</span><span>Winter Storm Crime Scene</span><span>•</span><span>Starter build</span></footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

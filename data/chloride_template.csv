@@ -1,0 +1,5 @@
+# SYNTHETIC EXAMPLE DATA ONLY — NOT A MEASUREMENT, NOT PRINCETON DATA, NOT FOR INFERENCE
+# This template demonstrates a future import shape. Do not present these rows as observed chloride values.
+sample_id,observed_at,site_id,chloride_mg_l,units,record_status,source_url,notes
+synthetic-001,2030-01-01T12:00:00Z,DEMO-SITE,42,mg/L,SYNTHETIC,,Fictional example for parser and UI development only
+synthetic-002,2030-01-02T12:00:00Z,DEMO-SITE,58,mg/L,SYNTHETIC,,Fictional example for parser and UI development only

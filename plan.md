@@ -1,4 +1,4 @@
-# SaltShadow 2.0 — The Winter Storm Crime Scene
+# SaltShadow — The Winter Storm Crime Scene
 
 **HackPrinceton Fall 2026 | Four-person execution and integration plan | Updated November 14, 2026 (evening)**
 
